@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact | Ahatab Foundation</title>
+  <meta name="description" content="Contact Ahatab Foundation in Faridpur, Bangladesh.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body data-title="meta.contact">
+  <a class="skip" href="#main" data-i18n="skip"></a>
+  <header id="site-header"></header>
+  <main id="main">
+    <div class="wrap page-head">
+      <h1 data-i18n="contact.title"></h1>
+      <p class="lede" data-i18n="contact.lede"></p>
+      <div class="stitch stitch-short"></div>
+    </div>
+    <section class="section" style="padding-top:1rem">
+      <div class="wrap two-col">
+        <div class="panel">
+          <h2 style="font-size:1.5rem" data-i18n="contact.form.title"></h2>
+          <form id="contact-form" class="form-grid" novalidate>
+            <div class="field"><label for="c-name" data-i18n="form.name"></label><input id="c-name" name="name" required maxlength="120" autocomplete="name"></div>
+            <div class="field"><label for="c-email"><span data-i18n="form.email"></span> <span class="opt" data-i18n="form.optional"></span></label><input id="c-email" name="email" type="email" maxlength="200" autocomplete="email"></div>
+            <div class="field"><label for="c-phone"><span data-i18n="form.phone"></span> <span class="opt" data-i18n="form.optional"></span></label><input id="c-phone" name="phone" type="tel" maxlength="40" autocomplete="tel"></div>
+            <div class="field"><label for="c-subject"><span data-i18n="form.subject"></span> <span class="opt" data-i18n="form.optional"></span></label><input id="c-subject" name="subject" maxlength="200"></div>
+            <div class="field"><label for="c-body" data-i18n="form.message"></label><textarea id="c-body" name="body" required maxlength="5000"></textarea></div>
+            <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+            <p class="form-status" role="status"></p>
+            <div><button class="btn btn-teal" type="submit" data-i18n="contact.submit"></button></div>
+          </form>
+        </div>
+        <div>
+          <h2 style="font-size:1.5rem" data-i18n="contact.info"></h2>
+          <div id="contact-info"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer id="site-footer"></footer>
+  <script type="module" src="js/contact.js"></script>
+</body>
+</html>

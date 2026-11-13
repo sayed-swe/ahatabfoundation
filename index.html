@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ahatab Foundation, Faridpur</title>
+  <meta name="description" content="Ahatab Foundation is a community-rooted charity in Faridpur, Bangladesh, extending hands to those who need it most.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body data-title="meta.home">
+  <a class="skip" href="#main" data-i18n="skip"></a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <h1 data-i18n="hero.title"></h1>
+          <p class="lede" data-i18n="hero.lede"></p>
+          <div class="btn-row">
+            <a class="btn btn-teal" href="programs.html" data-i18n="hero.cta.programs"></a>
+            <a class="btn btn-sun" href="get-involved.html#give" data-i18n="hero.cta.donate"></a>
+          </div>
+        </div>
+
+        <!-- A small quilt of patches, stitched together by one running thread that draws itself once. -->
+        <svg class="quilt" viewBox="0 0 480 520" aria-hidden="true" focusable="false">
+          <defs>
+            <pattern id="xs" width="22" height="22" patternUnits="userSpaceOnUse">
+              <path d="M7 7l8 8M15 7l-8 8" stroke="#10312f" stroke-width="2" stroke-linecap="round" fill="none" opacity=".45"/>
+            </pattern>
+            <mask id="reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="480" height="520">
+              <path class="thread-reveal" pathLength="1" d="M24 52C140 20 220 150 300 120S450 60 440 190 330 300 250 290 90 330 100 430 300 470 440 488" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
+            </mask>
+          </defs>
+          <rect x="0" y="0" width="290" height="210" rx="6" fill="#1e6b62"/>
+          <rect x="302" y="0" width="178" height="210" rx="6" fill="#fbe4bc"/>
+          <rect x="0" y="222" width="170" height="298" rx="6" fill="#2f3e7e"/>
+          <rect x="182" y="222" width="298" height="140" rx="6" fill="#dceae4"/>
+          <rect x="182" y="374" width="130" height="146" rx="6" fill="#f5d9d3"/>
+          <rect x="324" y="374" width="156" height="146" rx="6" fill="#14504a"/>
+
+          <g fill="none" stroke-width="2" stroke-dasharray="6 6" stroke-linecap="round">
+            <rect x="9" y="9" width="272" height="192" rx="3" stroke="#fff" opacity=".5"/>
+            <rect x="311" y="9" width="160" height="192" rx="3" stroke="#10312f" opacity=".4"/>
+            <rect x="9" y="231" width="152" height="280" rx="3" stroke="#fff" opacity=".5"/>
+            <rect x="191" y="231" width="280" height="122" rx="3" stroke="#10312f" opacity=".4"/>
+            <rect x="191" y="383" width="112" height="128" rx="3" stroke="#10312f" opacity=".4"/>
+            <rect x="333" y="383" width="138" height="128" rx="3" stroke="#fff" opacity=".5"/>
+            <!-- motifs -->
+            <g stroke="#fff" opacity=".55">
+              <circle cx="145" cy="105" r="16"/><circle cx="145" cy="105" r="32"/><circle cx="145" cy="105" r="48"/>
+            </g>
+            <path d="M391 55l42 50-42 50-42-50z" stroke="#10312f" opacity=".4"/>
+            <path d="M40 255c40 20 40 50 0 70s-40 50 0 70 40 50 0 70" stroke="#fff" opacity=".5"/>
+            <path d="M120 255c-40 20-40 50 0 70s40 50 0 70-40 50 0 70" stroke="#fff" opacity=".5"/>
+            <circle cx="247" cy="447" r="22" stroke="#10312f" opacity=".4"/>
+            <path d="M348 470l22-30 22 30 22-30 22 30" stroke="#fff" opacity=".5"/>
+          </g>
+          <rect x="204" y="244" width="252" height="98" fill="url(#xs)"/>
+
+          <g mask="url(#reveal)" fill="none" stroke-linecap="round" stroke-dasharray="14 11">
+            <path d="M24 52C140 20 220 150 300 120S450 60 440 190 330 300 250 290 90 330 100 430 300 470 440 488" stroke="#10312f" stroke-width="9"/>
+            <path d="M24 52C140 20 220 150 300 120S450 60 440 190 330 300 250 290 90 330 100 430 300 470 440 488" stroke="#f0a23b" stroke-width="5"/>
+          </g>
+          <g class="needle">
+            <circle cx="440" cy="488" r="9" fill="#f0a23b" stroke="#10312f" stroke-width="3"/>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="section section-white">
+      <div class="wrap split">
+        <h2 data-i18n="intro.title"></h2>
+        <div>
+          <p data-i18n="intro.body"></p>
+          <a class="btn btn-ghost" href="about.html" data-i18n="intro.link"></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 data-i18n="programs.title"></h2>
+          <p data-i18n="programs.sub"></p>
+        </div>
+        <div class="quilt-grid" id="programs" aria-live="polite"></div>
+        <p style="margin-top:1.5rem"><a class="btn btn-ghost" href="programs.html" data-i18n="programs.all"></a></p>
+      </div>
+    </section>
+
+    <section class="section section-white" id="impact" hidden>
+      <div class="wrap">
+        <h2 data-i18n="impact.title"></h2>
+        <div class="impact" id="impact-grid"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head"><h2 data-i18n="stories.title"></h2></div>
+        <ul class="rows" id="stories"></ul>
+        <p style="margin-top:1rem"><a class="btn btn-ghost" href="stories.html" data-i18n="stories.all"></a></p>
+      </div>
+    </section>
+
+    <section class="section section-white" id="events" hidden>
+      <div class="wrap">
+        <div class="section-head"><h2 data-i18n="events.title"></h2></div>
+        <ul class="rows" id="events-list"></ul>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="wrap">
+        <h2 data-i18n="cta.title"></h2>
+        <div class="btn-row">
+          <a class="btn btn-sun" href="get-involved.html#give" data-i18n="cta.donate"></a>
+          <a class="btn btn-ghost" href="get-involved.html#volunteer" data-i18n="cta.volunteer"></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script type="module" src="js/home.js"></script>
+</body>
+</html>
