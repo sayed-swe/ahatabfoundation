@@ -311,7 +311,7 @@ function fieldHtml(f, row) {
   else if (f.type === "image")
     input = `<div class="img-field"><input id="${id}" name="${f.name}" type="text" placeholder="https://… or upload below" value="${esc(v ?? "")}">
       <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" data-upload="${f.name}" aria-label="Upload a photo">
-      <img alt="" ${safeUrl(v) ? `src="${esc(v)}"` : "hidden"} data-preview="${f.name}"></div>`;
+      <img alt="" ${safeUrl(v) ? `src="${esc(safeUrl(v))}"` : "hidden"} data-preview="${f.name}"></div>`;
   else input = `<input id="${id}" name="${f.name}" type="text" value="${esc(v ?? "")}"${req}${f.type === "slug" ? ' pattern="[a-z0-9\\-]+"' : ""}>`;
   return `<div class="field"><label for="${id}">${esc(f.label)}</label>${input}${hint}</div>`;
 }

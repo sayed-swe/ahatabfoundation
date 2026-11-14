@@ -8,7 +8,15 @@ export const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 // Accepts https links and paths on this site (e.g. /images/sample/flood-village.svg). Rejects everything else.
-export const safeUrl = (u) => (/^(https?:\/\/|\/(?!\/))/i.test(u || "") ? u : "");
+// Site paths are resolved against the folder this script lives in, so pictures still load when the site is
+// hosted under a sub-path (for example GitHub Pages at /ahatabfoundation/) and not only at the domain root.
+const SITE_BASE = new URL("../", import.meta.url).href;
+export const safeUrl = (u) => {
+  const v = String(u || "").trim();
+  if (/^https?:\/\//i.test(v)) return v;
+  if (/^\/(?!\/)/.test(v)) return SITE_BASE + v.slice(1);
+  return "";
+};
 
 export function paragraphs(text) {
   return String(text || "")
