@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found | Ahatab Foundation</title>
+  <meta name="robots" content="noindex">
+  <style>
+    body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f1f6f3;color:#10312f;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;text-align:center;padding:1.5rem}
+    main{max-width:30rem}
+    h1{font-family:Georgia,serif;font-weight:400;font-size:2rem;margin:.2em 0}
+    a{display:inline-block;background:#f0a23b;color:#10312f;text-decoration:none;font-weight:600;padding:.8rem 1.6rem;border-radius:999px;margin-top:1rem}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>We couldn't find that page.</h1>
+    <p>The address may have changed or has a typo. The home page is a good place to start.</p>
+    <a id="home" href="/">Go to the home page</a>
+  </main>
+  <script>
+    // On a GitHub Pages project site the site lives under /<repo>/, so build the link from the first path segment.
+    var h = location.hostname.indexOf("github.io") > -1 ? "/" + location.pathname.split("/")[1] + "/home/" : "/home/";
+    document.getElementById("home").href = h;
+  </script>
+</body>
+</html>

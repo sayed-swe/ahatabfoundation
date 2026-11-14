@@ -1,11 +1,11 @@
 import { t, pick, fmtDate, fmtNumber } from "./i18n.js";
-import { esc, icon, safeUrl } from "./ui.js";
+import { esc, icon, safeUrl, pageUrl } from "./ui.js";
 
 const sample = (row) => (row.is_sample ? `<span class="pill-sample">${esc(t("common.sample"))}</span>` : "");
 
 export function patchHtml(p) {
   const img = safeUrl(p.image_url);
-  return `<a class="patch${img ? " has-img" : ""}" href="programs.html#${esc(p.slug)}">
+  return `<a class="patch${img ? " has-img" : ""}" href="${pageUrl("programs", "#" + encodeURIComponent(p.slug))}">
     ${img ? `<img class="patch-img" src="${esc(img)}" alt="" loading="lazy">` : `<span class="patch-icon">${icon(p.icon)}</span>`}
     <h3>${esc(pick(p, "title"))}</h3>
     <p>${esc(pick(p, "summary"))}</p>
@@ -15,7 +15,7 @@ export function patchHtml(p) {
 
 export function issueHtml(s) {
   const img = safeUrl(s.image_url);
-  const href = `stories.html?s=${encodeURIComponent(s.slug)}`;
+  const href = pageUrl("news", `?s=${encodeURIComponent(s.slug)}`);
   return `<article class="issue">
     ${img ? `<img class="issue-img" src="${esc(img)}" alt="" loading="lazy">` : ""}
     <div>
@@ -32,7 +32,7 @@ export function storyRowHtml(s) {
   return `<li class="row">
     <div class="row-meta"><b>${esc(cat)}</b>${esc(fmtDate(s.published_at))}${sample(s)}</div>
     <div>
-      <h3><a href="stories.html?s=${encodeURIComponent(s.slug)}">${esc(pick(s, "title"))}</a></h3>
+      <h3><a href="${pageUrl("news", `?s=${encodeURIComponent(s.slug)}`)}">${esc(pick(s, "title"))}</a></h3>
       <p>${esc(pick(s, "excerpt"))}</p>
     </div>
     ${img ? `<img class="row-thumb" src="${esc(img)}" alt="" loading="lazy">` : "<span></span>"}

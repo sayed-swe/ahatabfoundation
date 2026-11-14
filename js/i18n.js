@@ -5,6 +5,54 @@ const KEY = "ahatab-lang";
 const dict = {
   en: {
     "skip": "Skip to content",
+    "nav.news": "News",
+    "nav.volunteer": "Volunteer",
+    "nav.close": "Close menu",
+    "meta.news": "News and stories | Ahatab Foundation",
+    "meta.donate": "Donate | Ahatab Foundation",
+    "meta.volunteer": "Volunteer | Ahatab Foundation",
+    "donate.title": "Donate",
+    "donate.lede": "Give in a few taps from your phone. Your gift helps families in Faridpur with food, care and shelter.",
+    "donate.s1": "Amount",
+    "donate.s2": "Method",
+    "donate.s3": "Send",
+    "donate.amount.title": "How much would you like to give?",
+    "donate.amount.other": "Other amount",
+    "donate.amount.min": "Please enter an amount of ৳10 or more.",
+    "donate.name.required": "Please enter your name, or choose to give anonymously.",
+    "donate.anon": "Give anonymously",
+    "donate.next": "Continue",
+    "donate.back": "Back",
+    "donate.method.title": "Choose how to pay",
+    "donate.method.group": "Mobile banking",
+    "donate.method.empty": "Payment numbers are being set up. Please contact us and we will tell you how to give today.",
+    "donate.method.contact": "Contact us",
+    "donate.pay": "Pay ৳{a}",
+    "donate.to": "Please send money to this number",
+    "donate.copy": "Copy",
+    "donate.copied": "Copied",
+    "donate.amount.label": "Amount to send",
+    "donate.timer": "Time left",
+    "donate.timer.over": "The timer has ended. If you already sent your gift, you can still enter the Transaction ID below.",
+    "donate.how": "How to send",
+    "donate.step.1": "Open your {m} app or dial its USSD code.",
+    "donate.step.2": "Choose {t} and send ৳{a} to the number above.",
+    "donate.step.3": "Copy the Transaction ID from the confirmation message and enter it below.",
+    "donate.trx.label": "Transaction ID",
+    "donate.trx.ph": "For example 9HK3L2M4NP",
+    "donate.trx.submit": "Submit Transaction ID",
+    "donate.trx.invalid": "Enter the Transaction ID exactly as in your message: letters and numbers, 6 to 24 characters.",
+    "donate.trx.dupe": "This Transaction ID was already submitted. If you think this is a mistake, please contact us.",
+    "donate.thanks.title": "Thank you!",
+    "donate.thanks.body": "We have received your Transaction ID. Our team will check it and confirm your gift soon.",
+    "donate.thanks.again": "Give again",
+    "donate.thanks.home": "Back to home",
+    "donate.safe": "Never share your PIN or OTP with anyone. We will never ask for it.",
+    "donate.honest": "We confirm every gift by hand against our account, so your gift shows as confirmed after our team checks it.",
+    "donate.optional.phone": "Phone (optional)",
+    "donate.optional.msg": "Message (optional)",
+    "donate.summary": "Your gift",
+    "donate.type.default": "Send Money",
     "nav.events": "Events",
     "meta.events": "Events | Ahatab Foundation",
     "events.h1": "Events",
@@ -41,6 +89,9 @@ const dict = {
     "intro.title": "Small acts of help add up.",
     "intro.body": "Ahatab Foundation began in 2026 to honour a grandfather's kindness. We hold one belief close: when neighbours look after neighbours, nobody is left behind.",
     "intro.link": "Read our story",
+    "feed.title": "Every meal, every book, every checkup.",
+    "feed.body": "Gifts go straight into the programs listed above, and our team checks and confirms each gift before we count it.",
+    "feed.cta": "Give a gift",
 
     "programs.title": "What we do",
     "programs.sub": "We start by meeting basic human needs, then open doors to a better future.",
@@ -151,6 +202,54 @@ const dict = {
   },
   bn: {
     "skip": "মূল অংশে যান",
+    "nav.news": "খবর",
+    "nav.volunteer": "স্বেচ্ছাসেবক",
+    "nav.close": "মেনু বন্ধ করুন",
+    "meta.news": "খবর ও গল্প | আহতাব ফাউন্ডেশন",
+    "meta.donate": "অনুদান দিন | আহতাব ফাউন্ডেশন",
+    "meta.volunteer": "স্বেচ্ছাসেবক হোন | আহতাব ফাউন্ডেশন",
+    "donate.title": "অনুদান দিন",
+    "donate.lede": "ফোন থেকে কয়েকটি ট্যাপেই অনুদান দিন। আপনার দান ফরিদপুরের পরিবারগুলোর খাবার, যত্ন ও আশ্রয়ে কাজে লাগবে।",
+    "donate.s1": "পরিমাণ",
+    "donate.s2": "মাধ্যম",
+    "donate.s3": "পাঠান",
+    "donate.amount.title": "কত টাকা দিতে চান?",
+    "donate.amount.other": "অন্য পরিমাণ",
+    "donate.amount.min": "অন্তত ৳১০ বা তার বেশি লিখুন।",
+    "donate.name.required": "আপনার নাম লিখুন, অথবা নাম গোপন রাখুন।",
+    "donate.anon": "নাম গোপন রাখুন",
+    "donate.next": "পরবর্তী ধাপ",
+    "donate.back": "পিছনে",
+    "donate.method.title": "কীভাবে পাঠাবেন বেছে নিন",
+    "donate.method.group": "মোবাইল ব্যাংকিং",
+    "donate.method.empty": "পেমেন্টের নম্বর প্রস্তুত করা হচ্ছে। যোগাযোগ করুন, আজই কীভাবে দেবেন আমরা জানিয়ে দেব।",
+    "donate.method.contact": "যোগাযোগ করুন",
+    "donate.pay": "৳{a} পাঠান",
+    "donate.to": "অনুগ্রহ করে নিচের নম্বরে সেন্ড মানি করুন",
+    "donate.copy": "কপি",
+    "donate.copied": "কপি হয়েছে",
+    "donate.amount.label": "যে পরিমাণ পাঠাবেন",
+    "donate.timer": "সময় বাকি",
+    "donate.timer.over": "সময় শেষ হয়েছে। আপনি আগেই টাকা পাঠিয়ে থাকলে নিচে ট্রানজ্যাকশন আইডি দিতে পারবেন।",
+    "donate.how": "কীভাবে পাঠাবেন",
+    "donate.step.1": "আপনার {m} অ্যাপ অথবা ইউএসএসডি কোড ব্যবহার করুন।",
+    "donate.step.2": "{t} বেছে নিয়ে উপরের নম্বরে ৳{a} পাঠান।",
+    "donate.step.3": "নিশ্চিতকরণ বার্তা থেকে ট্রানজ্যাকশন আইডি কপি করে নিচে লিখুন।",
+    "donate.trx.label": "ট্রানজ্যাকশন আইডি",
+    "donate.trx.ph": "যেমন 9HK3L2M4NP",
+    "donate.trx.submit": "ট্রানজ্যাকশন আইডি জমা দিন",
+    "donate.trx.invalid": "বার্তায় যেমন আছে ঠিক তেমন লিখুন: ইংরেজি অক্ষর ও সংখ্যা, ৬ থেকে ২৪ অক্ষর।",
+    "donate.trx.dupe": "এই ট্রানজ্যাকশন আইডি আগেই জমা হয়েছে। ভুল মনে হলে আমাদের সাথে যোগাযোগ করুন।",
+    "donate.thanks.title": "ধন্যবাদ!",
+    "donate.thanks.body": "আপনার ট্রানজ্যাকশন আইডি পেয়েছি। আমাদের দল যাচাই করে শীঘ্রই আপনার অনুদান নিশ্চিত করবে।",
+    "donate.thanks.again": "আবার অনুদান দিন",
+    "donate.thanks.home": "হোমে ফিরুন",
+    "donate.safe": "আপনার পিন বা ওটিপি কাউকে দেবেন না। আমরা কখনো তা চাইব না।",
+    "donate.honest": "প্রতিটি অনুদান আমরা নিজেদের অ্যাকাউন্টের সাথে মিলিয়ে নিশ্চিত করি, তাই যাচাইয়ের পর আপনার অনুদান নিশ্চিত দেখাবে।",
+    "donate.optional.phone": "ফোন (ঐচ্ছিক)",
+    "donate.optional.msg": "বার্তা (ঐচ্ছিক)",
+    "donate.summary": "আপনার অনুদান",
+    "donate.type.default": "সেন্ড মানি",
     "nav.events": "আয়োজন",
     "meta.events": "আয়োজন | আহতাব ফাউন্ডেশন",
     "events.h1": "আয়োজন",
@@ -187,6 +286,9 @@ const dict = {
     "intro.title": "ছোট ছোট সাহায্য মিলেই বড় পরিবর্তন।",
     "intro.body": "একজন দাদার মানবিকতাকে সম্মান জানাতে ২০২৬ সালে আহতাব ফাউন্ডেশনের যাত্রা শুরু। আমরা একটি বিশ্বাস আঁকড়ে ধরি: প্রতিবেশী যখন প্রতিবেশীর খোঁজ রাখে, কেউ পিছিয়ে থাকে না।",
     "intro.link": "আমাদের গল্প পড়ুন",
+    "feed.title": "প্রতিটি বেলার খাবার, প্রতিটি বই, প্রতিটি চিকিৎসা।",
+    "feed.body": "অনুদান সরাসরি উপরের কর্মসূচিতে যায়, আর প্রতিটি অনুদান গণনায় ধরার আগে আমাদের দল যাচাই করে নিশ্চিত করে।",
+    "feed.cta": "অনুদান দিন",
 
     "programs.title": "আমাদের কাজ",
     "programs.sub": "আমরা শুরু করি মৌলিক মানবিক চাহিদা পূরণ দিয়ে, তারপর ভালো ভবিষ্যতের দরজা খুলে দিই।",
@@ -297,12 +399,23 @@ const dict = {
   },
 };
 
+// First visit: Bangla for people in Bangladesh, English for everyone else. Bangladesh is the only place on the
+// Asia/Dhaka time zone, and the browser knows it without sending anything anywhere, so no IP address is looked up.
+// Once someone picks a language with the toggle, that choice wins.
+function defaultLang() {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (tz === "Asia/Dhaka" || tz === "Asia/Dacca") return "bn";
+  } catch (_) { /* no Intl: fall through */ }
+  return "en";
+}
+
 export function getLang() {
   try {
     const saved = localStorage.getItem(KEY);
     if (saved === "en" || saved === "bn") return saved;
   } catch (_) { /* storage unavailable */ }
-  return "en";
+  return defaultLang();
 }
 
 export function setLang(lang) {

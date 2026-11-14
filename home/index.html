@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>try{if(!sessionStorage.getItem("ahatab-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-pending")}catch(e){}</script>
+  <title>Ahatab Foundation, Faridpur</title>
+  <meta name="description" content="Ahatab Foundation is a community-rooted charity in Faridpur, Bangladesh, extending hands to those who need it most.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body data-title="meta.home">
+  <a class="skip" href="#main" data-i18n="skip"></a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <h1 data-i18n="hero.title"></h1>
+          <p class="lede" data-i18n="hero.lede"></p>
+          <div class="btn-row">
+            <a class="btn btn-teal" href="../programs/" data-i18n="hero.cta.programs"></a>
+            <a class="btn btn-sun" href="../donate/" data-i18n="hero.cta.donate"></a>
+          </div>
+        </div>
+
+        <figure class="hero-art"><img data-slot="hero" alt="" width="1200" height="800" fetchpriority="high" decoding="async"></figure>
+      </div>
+    </section>
+
+    <section class="section section-white">
+      <div class="wrap intro-grid">
+        <figure class="art"><img data-slot="intro" alt="" width="1200" height="800" loading="lazy" decoding="async"></figure>
+        <div>
+          <h2 data-i18n="intro.title"></h2>
+          <p data-i18n="intro.body"></p>
+          <a class="btn btn-ghost" href="../about/" data-i18n="intro.link"></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="issues" hidden>
+      <div class="wrap">
+        <div class="section-head">
+          <h2 data-i18n="why.title"></h2>
+          <p data-i18n="why.sub"></p>
+        </div>
+        <div class="issues" id="issues-list"></div>
+      </div>
+    </section>
+
+    <section class="section section-white">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 data-i18n="programs.title"></h2>
+          <p data-i18n="programs.sub"></p>
+        </div>
+        <div class="quilt-grid" id="programs" aria-live="polite"></div>
+        <p style="margin-top:1.5rem"><a class="btn btn-ghost" href="../programs/" data-i18n="programs.all"></a></p>
+      </div>
+    </section>
+
+    <section class="section section-white">
+      <div class="wrap intro-grid intro-flip">
+        <figure class="art"><img data-slot="children" alt="" width="1200" height="800" loading="lazy" decoding="async"></figure>
+        <div>
+          <h2 data-i18n="feed.title"></h2>
+          <p data-i18n="feed.body"></p>
+          <a class="btn btn-sun" href="../donate/" data-i18n="feed.cta"></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="impact" hidden>
+      <div class="wrap">
+        <h2 data-i18n="impact.title"></h2>
+        <div class="impact" id="impact-grid"></div>
+      </div>
+    </section>
+
+    <section class="section section-white">
+      <div class="wrap">
+        <div class="section-head"><h2 data-i18n="stories.title"></h2></div>
+        <ul class="rows" id="stories"></ul>
+        <p style="margin-top:1rem"><a class="btn btn-ghost" href="../news/" data-i18n="stories.all"></a></p>
+      </div>
+    </section>
+
+    <section class="section" id="events" hidden>
+      <div class="wrap">
+        <div class="section-head"><h2 data-i18n="events.title"></h2></div>
+        <ul class="rows" id="events-list"></ul>
+        <p style="margin-top:1rem"><a class="btn btn-ghost" href="../events/" data-i18n="events.all"></a></p>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="wrap">
+        <h2 data-i18n="cta.title"></h2>
+        <div class="btn-row">
+          <a class="btn btn-sun" href="../donate/" data-i18n="cta.donate"></a>
+          <a class="btn btn-ghost" href="../volunteer/" data-i18n="cta.volunteer"></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script type="module" src="../js/home.js"></script>
+</body>
+</html>

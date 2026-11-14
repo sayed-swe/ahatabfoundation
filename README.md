@@ -6,16 +6,23 @@ Static site (plain HTML, CSS and ES modules, no build step) with [Supabase](http
 
 ## Pages
 
-| Page | File |
+Every page is a folder with an `index.html`, so the address bar shows clean names.
+
+| Address | What it is |
 | --- | --- |
-| Home | `index.html` |
-| About us | `about.html` |
-| What we do | `programs.html` |
-| News and stories | `stories.html` |
-| Events (upcoming and past) | `events.html` |
-| Donate and volunteer | `get-involved.html` |
-| Contact | `contact.html` |
-| Admin dashboard | `admin/index.html` |
+| `/home/` | Home (the site root redirects here) |
+| `/about/` | About us |
+| `/programs/` | What we do |
+| `/news/` | News and stories (`/news/?s=<slug>` opens one story) |
+| `/events/` | Events, upcoming and past |
+| `/donate/` | Donate (amount, payment method, Transaction ID) |
+| `/volunteer/` | Volunteer form and sharing |
+| `/contact/` | Contact |
+| `/admin/` | Admin dashboard |
+
+On the phone the admin has an app-style bottom bar (Home, Visitors, Gifts, Inbox, More).
+
+**Language.** Visitors whose device time zone is Bangladesh (Asia/Dhaka) get Bangla first; everyone else gets English. The BN / English switch sits at the top of the menu and a visitor's own choice is remembered. A short logo animation plays once per visit (skipped when the device asks for reduced motion).
 
 ## First-time admin setup
 
@@ -37,7 +44,19 @@ python3 -m http.server 8000
 
 Then open http://localhost:8000.
 
+## Donations
+
+The Donate page walks a visitor through: amount, payment method (bKash, Nagad, Rocket, Upay and so on, taken from **Settings → Ways to give**), then a "send money" step showing your number with a Copy button and a 10-minute reminder timer, and finally the Transaction ID. The gift arrives under **Admin → Gifts** as *pending*. Check it against your real account, then press **Confirm gift** (or **Reject**). Only confirmed gifts count toward "confirmed gifts so far" on the Overview.
+
+This is a manual flow: the site cannot see your bKash or Nagad account. Automatic confirmation needs a merchant payment gateway (for example SSLCommerz, bKash merchant API or a gateway like Deshi Pay) plus a Supabase Edge Function that receives the gateway's callback and marks the gift verified.
+
+## Site pictures
+
+Each public page shows a built-in original illustration (`images/art/`). In **Admin → Settings → Site pictures** you can replace any of the ten slots with an uploaded photo or a link, or reset it. Please upload photos of people, and above all of children, only with their (or their guardians') agreement.
+
 ## Deploy
+
+GitHub Pages: publish the `main` branch root. The site works under a project sub-path such as `/ahatabfoundation/`. `404.html` sends lost visitors to `/home/`. Because pages are folders, old `.html` addresses (`stories.html`, `get-involved.html`) no longer exist.
 
 Import the repository in Vercel (or Netlify, Cloudflare Pages) as a static site: no build command, output directory is the repository root.
 

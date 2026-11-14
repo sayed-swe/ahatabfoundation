@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>try{if(!sessionStorage.getItem("ahatab-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-pending")}catch(e){}</script>
+  <title>Volunteer | Ahatab Foundation</title>
+  <meta name="description" content="Volunteer with Ahatab Foundation in Faridpur, Bangladesh. Tell us how you would like to help.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body data-title="meta.volunteer">
+  <a class="skip" href="#main" data-i18n="skip"></a>
+  <header id="site-header"></header>
+  <main id="main">
+    <div class="wrap page-head has-art">
+      <div class="page-head-text">
+        <h1 data-i18n="vol.title"></h1>
+        <p class="lede" data-i18n="vol.lede"></p>
+        <div class="stitch stitch-short"></div>
+      </div>
+      <figure class="page-art"><img data-slot="volunteer" alt="" width="1200" height="800" decoding="async"></figure>
+    </div>
+    <section class="section" style="padding-top:1rem">
+      <div class="wrap two-col">
+        <div class="panel">
+          <form id="vol-form" class="form-grid" novalidate>
+            <div class="field"><label for="v-name" data-i18n="form.name"></label><input id="v-name" name="name" required maxlength="120" autocomplete="name"></div>
+            <div class="field"><label for="v-phone" data-i18n="form.phone"></label><input id="v-phone" name="phone" type="tel" required maxlength="40" autocomplete="tel"></div>
+            <div class="field"><label for="v-email"><span data-i18n="form.email"></span> <span class="opt" data-i18n="form.optional"></span></label><input id="v-email" name="email" type="email" maxlength="200" autocomplete="email"></div>
+            <div class="field">
+              <label for="v-area" data-i18n="vol.area"></label>
+              <select id="v-area" name="area">
+                <option data-i18n="vol.a.logistics" value="Distribution and logistics"></option>
+                <option data-i18n="vol.a.health" value="Health and first aid"></option>
+                <option data-i18n="vol.a.teaching" value="Teaching and mentoring"></option>
+                <option data-i18n="vol.a.fund" value="Fundraising"></option>
+                <option data-i18n="vol.a.media" value="Photos, video and design"></option>
+                <option data-i18n="vol.a.other" value="Something else"></option>
+              </select>
+            </div>
+            <div class="field"><label for="v-msg"><span data-i18n="form.message"></span> <span class="opt" data-i18n="form.optional"></span></label><textarea id="v-msg" name="message" maxlength="3000"></textarea></div>
+            <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+            <p class="form-status" role="status"></p>
+            <div><button class="btn btn-teal" type="submit" data-i18n="vol.submit"></button></div>
+          </form>
+        </div>
+        <div>
+          <h2 data-i18n="spread.title"></h2>
+          <p data-i18n="spread.body"></p>
+          <button class="btn btn-ghost" type="button" id="share" data-i18n="share.copy"></button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer id="site-footer"></footer>
+  <script type="module" src="../js/volunteer.js"></script>
+</body>
+</html>

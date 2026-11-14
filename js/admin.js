@@ -1,5 +1,5 @@
 import { sb } from "./supa.js";
-import { esc, safeUrl, ICON_NAMES } from "./ui.js";
+import { esc, safeUrl, ICON_NAMES, LOGO, defaultImage } from "./ui.js";
 
 const app = document.getElementById("app");
 const dlg = document.getElementById("dlg");
@@ -117,6 +117,7 @@ async function boot() {
 function renderLogin(mode = "in", msg = "") {
   const signup = mode === "up";
   app.innerHTML = `<div class="auth"><div class="panel">
+    <div class="auth-logo">${LOGO}</div>
     <h1>${signup ? "Create admin account" : "Admin sign in"}</h1>
     <p class="muted">${signup ? "Make this account first. The first account to sign in can then claim admin access." : "Ahatab Foundation website."}</p>
     <form id="auth-form" class="form-grid">
@@ -178,15 +179,44 @@ const NAV = [
   ["donations", "Gifts"], ["volunteers", "Volunteers"], ["messages", "Messages"], ["settings", "Settings"],
 ];
 
+const TAB_ICONS = {
+  overview: '<path d="M3 11l9-8 9 8M5 10v10h14V10M10 20v-6h4v6"/>',
+  analytics: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  donations: '<path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/>',
+  messages: '<path d="M3 6h18v12H3zM3 7l9 7 9-7"/>',
+  more: '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
+};
+const TABS = [["overview", "Home"], ["analytics", "Visitors"], ["donations", "Gifts"], ["messages", "Inbox"]];
+const MORE = [["programs", "Programs"], ["stories", "Stories"], ["events", "Events"], ["volunteers", "Volunteers"], ["settings", "Settings"]];
+const tabIcon = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${TAB_ICONS[k]}</svg>`;
+
 async function renderShell() {
   app.innerHTML = `<div class="shell">
     <aside class="side">
-      <div class="name">Ahatab Foundation</div>
+      <div class="name">${LOGO}<span>Ahatab Foundation</span></div>
       <nav id="nav" aria-label="Admin"></nav>
-      <div class="foot"><a href="../index.html">View public site</a><span>${esc(state.user.email)}</span><button class="link-btn" id="out">Sign out</button></div>
+      <div class="foot"><a href="../home/">View public site</a><span>${esc(state.user.email)}</span><button class="link-btn" id="out">Sign out</button></div>
     </aside>
-    <main class="main" id="main"></main></div>`;
+    <main class="main" id="main"></main></div>
+    <nav class="tabbar" id="tabbar" aria-label="Quick menu">
+      ${TABS.map(([k, l]) => `<a href="#/${k}" data-tab="${k}">${tabIcon(k)}<span>${l}</span><i class="badge" data-badge="${k}" hidden></i></a>`).join("")}
+      <button type="button" id="more-btn" aria-expanded="false" aria-controls="sheet">${tabIcon("more")}<span>More</span><i class="badge" data-badge="volunteers" hidden></i></button>
+    </nav>
+    <div class="sheet-back" id="sheet-back" hidden></div>
+    <div class="sheet" id="sheet" role="dialog" aria-label="More" hidden>
+      <div class="sheet-grip" aria-hidden="true"></div>
+      ${MORE.map(([k, l]) => `<a href="#/${k}" data-more="${k}">${l}<i class="badge" data-badge="${k}" hidden></i></a>`).join("")}
+      <a href="../home/">View public site</a>
+      <button type="button" id="sheet-out">Sign out</button>
+    </div>`;
   document.getElementById("out").onclick = signOut;
+  const sheet = document.getElementById("sheet"), back = document.getElementById("sheet-back"), moreBtn = document.getElementById("more-btn");
+  const setSheet = (open) => { sheet.hidden = back.hidden = !open; moreBtn.setAttribute("aria-expanded", String(open)); if (open) sheet.querySelector("a")?.focus(); else moreBtn.focus(); };
+  moreBtn.onclick = () => setSheet(sheet.hidden);
+  back.onclick = () => setSheet(false);
+  sheet.addEventListener("click", (e) => { if (e.target.closest("a")) { sheet.hidden = back.hidden = true; moreBtn.setAttribute("aria-expanded", "false"); } });
+  sheet.addEventListener("keydown", (e) => { if (e.key === "Escape") setSheet(false); });
+  document.getElementById("sheet-out").onclick = signOut;
   window.addEventListener("hashchange", route);
   route();
   refreshBadges();
@@ -200,6 +230,11 @@ async function route() {
     ([k, l]) => `<a href="#/${k}" ${k === view ? 'aria-current="page"' : ""}>${l}<span class="badge" data-badge="${k}" hidden></span></a>`
   ).join("");
   refreshBadges();
+  document.querySelectorAll("[data-tab]").forEach((a) => (a.dataset.tab === view ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current")));
+  const moreOn = MORE.some(([k]) => k === view);
+  document.getElementById("more-btn")?.classList.toggle("on", moreOn);
+  document.querySelectorAll("[data-more]").forEach((a) => (a.dataset.more === view ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current")));
+  window.scrollTo(0, 0);
   const main = document.getElementById("main");
   main.innerHTML = '<p class="muted">Loading…</p>';
   try {
@@ -231,8 +266,7 @@ async function refreshBadges() {
       count("messages", (q) => q.eq("status", "new")),
     ]);
     Object.entries({ donations: d, volunteers: v, messages: m }).forEach(([k, n]) => {
-      const el = document.querySelector(`[data-badge="${k}"]`);
-      if (el) { el.textContent = n; el.hidden = n === 0; }
+      document.querySelectorAll(`[data-badge="${k}"]`).forEach((el) => { el.textContent = n; el.hidden = n === 0; });
     });
   } catch (err) { console.error(err); }
 }
@@ -248,12 +282,15 @@ async function renderOverview(main) {
     count("stories", (q) => q.eq("is_sample", true)),
     count("events", (q) => q.eq("is_sample", true)),
   ]);
+  let raised = null;
+  try { const g = await sb.from("donations").select("amount").eq("status", "verified"); if (!g.error) raised = (g.data || []).reduce((a, x) => a + Number(x.amount || 0), 0); } catch { /* optional card */ }
   let vis = null;
   try { vis = (await sb.rpc("analytics_summary", { days: 7 })).data; } catch { /* the overview works without it */ }
   const card = (href, n, label, alert) => `<a class="stat ${alert && n ? "alert" : ""}" href="#/${href}"><strong>${n}</strong>${label}</a>`;
   main.innerHTML = `<div class="main-head"><h1>Overview</h1></div>
     <div class="stats">
       ${card("donations", d, "gifts waiting to be confirmed", true)}
+      ${raised !== null ? card("donations", money(raised), "confirmed gifts so far") : ""}
       ${card("volunteers", v, "new volunteers", true)}
       ${card("messages", m, "unread messages", true)}
       ${card("programs", p, "programs on the website")}
@@ -400,7 +437,11 @@ async function renderInbox(main, key) {
   const { data, error } = await sb.from(r.table).select("*").order("created_at", { ascending: false });
   if (error) throw error;
   const rows = data || [];
+  const sum = (st) => rows.filter((x) => x.status === st).reduce((a, x) => a + Number(x.amount || 0), 0);
+  const totals = key === "donations" && rows.length
+    ? `<div class="stats" style="margin-bottom:1rem"><div class="stat"><strong>${money(sum("verified"))}</strong>confirmed gifts<small>${rows.filter((x) => x.status === "verified").length} gifts</small></div><div class="stat ${sum("pending") ? "alert" : ""}"><strong>${money(sum("pending"))}</strong>waiting to be checked<small>${rows.filter((x) => x.status === "pending").length} gifts</small></div></div>` : "";
   main.innerHTML = `<div class="main-head"><h1>${r.label}</h1>${rows.length ? '<button class="btn btn-ghost" id="csv" type="button">Download CSV</button>' : ""}</div>
+    ${totals}
     ${rows.length > 4 ? searchBox() : ""}
     <div class="table-wrap">${rows.length ? `<table><thead><tr>${r.columns.map((c) => `<th>${c[1]}</th>`).join("")}<th>Status</th><th></th></tr></thead><tbody>
     ${rows.map((row) => `<tr data-id="${esc(row.id)}">${r.columns.map(([f, l, fmt]) => `<td data-label="${esc(l)}">${fmt ? esc(fmt(row[f])) : esc(row[f] ?? "")}</td>`).join("")}
@@ -420,9 +461,17 @@ async function renderInbox(main, key) {
     };
     tr.querySelector("[data-view]").onclick = async () => {
       dlg.innerHTML = `<div class="dlg-head"><h2>${r.label.replace(/s$/, "")} details</h2><button class="btn btn-ghost btn-sm" data-close type="button">Close</button></div>
-        <div class="dlg-body detail"><dl>${r.detail.map(([f, l, fmt]) => (row[f] ? `<dt>${l}</dt><dd>${esc(fmt ? fmt(row[f]) : row[f])}</dd>` : "")).join("")}</dl></div>`;
+        <div class="dlg-body detail"><dl>${r.detail.map(([f, l, fmt]) => (row[f] ? `<dt>${l}</dt><dd>${esc(fmt ? fmt(row[f]) : row[f])}</dd>` : "")).join("")}</dl>
+        ${key === "donations" ? `<p class="muted" style="margin-top:1rem">Check that this Transaction ID and amount really arrived in your ${esc(row.method)} account before you confirm.</p><div class="dlg-actions"><button class="btn btn-danger" type="button" data-set="rejected">Reject</button><button class="btn btn-teal" type="button" data-set="verified">Confirm gift</button></div>` : ""}</div>`;
       dlg.showModal();
       dlg.querySelector("[data-close]").onclick = () => dlg.close();
+      dlg.querySelectorAll("[data-set]").forEach((b) => (b.onclick = async () => {
+        const { error: err } = await sb.from(r.table).update({ status: b.dataset.set }).eq("id", row.id);
+        if (err) return toast(err.message, true);
+        dlg.close();
+        toast(b.dataset.set === "verified" ? "Gift confirmed" : "Gift rejected");
+        route();
+      }));
       if (row.status === NEW_STATUS[key] && key === "messages") {
         await sb.from(r.table).update({ status: "read" }).eq("id", row.id);
         row.status = "read";
@@ -479,12 +528,14 @@ function downloadCsv(name, fields, rows) {
 }
 
 /* ---------- visitors ---------- */
-const PAGE_NAMES = { "index.html": "Home", "about.html": "About us", "programs.html": "What we do", "stories.html": "News", "events.html": "Events", "get-involved.html": "Get involved", "contact.html": "Contact" };
+const PAGE_NAMES = { home: "Home", about: "About us", programs: "What we do", news: "News", events: "Events", donate: "Donate", volunteer: "Volunteer", contact: "Contact" };
 const DEVICE_NAMES = { mobile: "Phone", tablet: "Tablet", desktop: "Computer" };
 const LANG_NAMES = { en: "English", bn: "বাংলা" };
 function pageName(path) {
   const [file, query] = String(path).replace(/^\//, "").split("?");
-  const base = PAGE_NAMES[file] || file;
+  // older rows were saved as /index.html, /stories.html and so on
+  const key = file.replace(/\.html$/, "").replace(/^index$/, "home").replace(/^stories$/, "news").replace(/^get-involved$/, "donate");
+  const base = PAGE_NAMES[key] || key;
   return query ? `${base} (story)` : base;
 }
 const num = (n) => Number(n || 0).toLocaleString("en-IN");
@@ -540,6 +591,20 @@ const DEFAULTS = {
   general: { name_en: "Ahatab Foundation", name_bn: "আহতাব ফাউন্ডেশন", tagline_en: "", tagline_bn: "", location_en: "", location_bn: "", email: "", phone: "", facebook: "", founded: "2026" },
   impact: { show: false, people_helped: 0, families_supported: 0, volunteers: 0, projects: 0 },
   donate: { methods: [], note_en: "", note_bn: "" },
+  images: {},
+};
+
+const IMAGE_LABELS = {
+  hero: "Home page, top picture",
+  intro: "Home page, introduction",
+  children: "Home page, giving section",
+  about: "About us page",
+  programs: "Programs page",
+  news: "News and stories page",
+  events: "Events page",
+  donate: "Donate page",
+  volunteer: "Volunteer page",
+  contact: "Contact page",
 };
 
 async function saveSetting(key, value) {
@@ -553,7 +618,7 @@ async function renderSettings(main) {
   if (error) throw error;
   const cur = JSON.parse(JSON.stringify(DEFAULTS));
   (data || []).forEach((r) => { cur[r.key] = { ...cur[r.key], ...r.value }; });
-  const g = cur.general, im = cur.impact, d = cur.donate;
+  const g = cur.general, im = cur.impact, d = cur.donate, imgs = cur.images || {};
   const inp = (form, name, label, val, type = "text") =>
     `<div class="field"><label for="${form}-${name}">${label}</label><input id="${form}-${name}" name="${name}" type="${type}" value="${esc(val ?? "")}"></div>`;
 
@@ -579,15 +644,65 @@ async function renderSettings(main) {
 
     <form class="settings-card form-grid" id="s-donate" style="max-width:none">
       <h2>Ways to give</h2>
-      <p class="muted">Add bank or mobile banking details. Visitors see these on the Get involved page.</p>
+      <p class="muted">Visitors pick one of these on the Donate page, send money to the number, then give you the Transaction ID. Only methods that are switched on and have a number are shown. Check each gift under Gifts against your real bKash, Nagad or bank account before you confirm it.</p>
       <div id="methods"></div>
-      <div><button class="btn btn-ghost btn-sm" type="button" id="add-method">Add a payment method</button></div>
+      <div class="quick-add"><span class="muted">Quick add:</span> ${["bKash", "Nagad", "Rocket", "Upay"].map((n) => `<button class="btn btn-ghost btn-sm" type="button" data-quick="${n}">${n}</button>`).join("")}<button class="btn btn-ghost btn-sm" type="button" id="add-method">Other method</button></div>
       <div class="two">
-        <div class="field"><label for="d-note_en">Message above the form (English)</label><textarea id="d-note_en" name="note_en" rows="3">${esc(d.note_en)}</textarea></div>
-        <div class="field"><label for="d-note_bn">Message above the form (বাংলা)</label><textarea id="d-note_bn" name="note_bn" rows="3">${esc(d.note_bn)}</textarea></div>
+        <div class="field"><label for="d-note_en">Message on the payment step (English)</label><textarea id="d-note_en" name="note_en" rows="3">${esc(d.note_en)}</textarea></div>
+        <div class="field"><label for="d-note_bn">Message on the payment step (বাংলা)</label><textarea id="d-note_bn" name="note_bn" rows="3">${esc(d.note_bn)}</textarea></div>
       </div>
       <div><button class="btn btn-teal" type="submit">Save ways to give</button></div>
+    </form>
+
+    <form class="settings-card form-grid" id="s-images" style="max-width:none">
+      <h2>Site pictures</h2>
+      <p class="muted">Each page shows a built-in illustration until you add your own. Upload a photo (JPG, PNG or WebP, up to 5 MB) or paste a link. A wide photo works best. Only upload photos of people when they, or their guardians for children, have agreed to it.</p>
+      <div class="pic-grid">${Object.keys(IMAGE_LABELS).map((k) => `<div class="pic-card" data-slot="${k}">
+        <img src="${esc(safeUrl(imgs[k]) || defaultImage(k))}" alt="" data-no-fallback>
+        <div class="pic-body">
+          <strong>${IMAGE_LABELS[k]}</strong>
+          <div class="field"><label for="p-${k}">Picture link (empty = built-in illustration)</label><input id="p-${k}" name="${k}" type="text" inputmode="url" autocomplete="off" placeholder="https://" value="${esc(imgs[k] || "")}"></div>
+          <div class="pic-actions"><label class="btn btn-ghost btn-sm" for="pu-${k}">Upload photo</label><input id="pu-${k}" class="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" data-up="${k}"><button class="btn btn-ghost btn-sm" type="button" data-reset="${k}">Use built-in</button></div>
+        </div></div>`).join("")}</div>
+      <div><button class="btn btn-teal" type="submit">Save pictures</button></div>
     </form>`;
+
+  const picForm = document.getElementById("s-images");
+  const setPic = (k, url) => {
+    picForm.elements[k].value = url;
+    picForm.querySelector(`.pic-card[data-slot="${k}"] img`).src = safeUrl(url) || defaultImage(k);
+  };
+  picForm.querySelectorAll("input[type=text]").forEach((el) => el.addEventListener("change", () => setPic(el.name, el.value.trim())));
+  picForm.querySelectorAll("[data-reset]").forEach((b) => (b.onclick = () => setPic(b.dataset.reset, "")));
+  picForm.querySelectorAll("[data-up]").forEach((input) => {
+    input.onchange = async () => {
+      const file = input.files[0];
+      input.value = "";
+      if (!file) return;
+      if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return toast("Choose a JPG, PNG or WebP photo.", true);
+      if (file.size > 5 * 1024 * 1024) return toast("Photo is over 5 MB. Choose a smaller one.", true);
+      const k = input.dataset.up;
+      const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
+      const path = `site/${k}-${Date.now()}.${ext}`;
+      toast("Uploading…");
+      const { error } = await sb.storage.from("media").upload(path, file, { contentType: file.type });
+      if (error) return toast(error.message, true);
+      const { data } = sb.storage.from("media").getPublicUrl(path);
+      setPic(k, data.publicUrl);
+      toast("Photo uploaded. Press Save pictures to publish it.");
+    };
+  });
+  picForm.onsubmit = (e) => {
+    e.preventDefault();
+    const out = {};
+    for (const k of Object.keys(IMAGE_LABELS)) {
+      const v = String(picForm.elements[k].value || "").trim();
+      if (!v) continue;
+      if (!safeUrl(v)) return toast(`${IMAGE_LABELS[k]}: the link must start with https://`, true);
+      out[k] = v;
+    }
+    saveSetting("images", out);
+  };
 
   document.getElementById("s-general").onsubmit = (e) => {
     e.preventDefault();
@@ -611,18 +726,20 @@ async function renderSettings(main) {
     box.innerHTML = methods.map((m, i) => `<div class="method-row">
       <div class="field"><label>Name</label><input data-i="${i}" data-k="name" placeholder="bKash personal" value="${esc(m.name)}"></div>
       <div class="field"><label>Number or account</label><input data-i="${i}" data-k="number" value="${esc(m.number)}"></div>
-      <div class="field"><label>Note</label><input data-i="${i}" data-k="note" placeholder="Send Money" value="${esc(m.note)}"></div>
+      <div class="field"><label>How to send</label><input data-i="${i}" data-k="note" placeholder="Send Money" value="${esc(m.note)}"></div>
+      <label class="check method-on"><input type="checkbox" data-i="${i}" data-k="enabled" ${m.enabled === false ? "" : "checked"}><span>Show on Donate page</span></label>
       <button class="btn btn-ghost btn-sm" type="button" data-rm="${i}" aria-label="Remove method ${i + 1}">Remove</button></div>`).join("");
-    box.querySelectorAll("input").forEach((el) => el.addEventListener("input", () => { methods[el.dataset.i][el.dataset.k] = el.value; }));
+    box.querySelectorAll("input").forEach((el) => el.addEventListener("input", () => { methods[el.dataset.i][el.dataset.k] = el.type === "checkbox" ? el.checked : el.value; }));
     box.querySelectorAll("[data-rm]").forEach((b) => (b.onclick = () => { methods.splice(Number(b.dataset.rm), 1); drawMethods(); }));
   };
   drawMethods();
-  document.getElementById("add-method").onclick = () => { methods.push({ name: "", number: "", note: "" }); drawMethods(); };
+  document.getElementById("add-method").onclick = () => { methods.push({ name: "", number: "", note: "", enabled: true }); drawMethods(); };
+  document.querySelectorAll("[data-quick]").forEach((b) => (b.onclick = () => { methods.push({ name: b.dataset.quick, number: "", note: "Send Money", enabled: true }); drawMethods(); box.querySelector(`[data-i="${methods.length - 1}"][data-k="number"]`)?.focus(); }));
   document.getElementById("s-donate").onsubmit = (e) => {
     e.preventDefault();
     const f = new FormData(e.target);
     saveSetting("donate", {
-      methods: methods.filter((m) => m.name.trim()).map((m) => ({ name: m.name.trim(), number: (m.number || "").trim(), note: (m.note || "").trim() })),
+      methods: methods.filter((m) => m.name.trim()).map((m) => ({ name: m.name.trim(), number: (m.number || "").trim(), note: (m.note || "").trim(), enabled: m.enabled !== false })),
       note_en: String(f.get("note_en") || "").trim(),
       note_bn: String(f.get("note_bn") || "").trim(),
     });

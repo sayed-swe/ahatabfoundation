@@ -9,7 +9,9 @@ body.admin { background: var(--mist); font-size: 1rem; line-height: 1.5; }
 .shell { display: grid; grid-template-columns: 230px minmax(0, 1fr); min-height: 100vh; }
 .shell > * { min-width: 0; }
 .side { background: var(--ink); color: #dcebe6; padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: 1rem; position: sticky; top: 0; height: 100vh; }
-.side .name { font-family: var(--serif); font-size: 1.15rem; color: #fff; padding: 0 .5rem; }
+.side .name { font-family: var(--serif); font-size: 1.15rem; color: #fff; padding: 0 .5rem; display: flex; align-items: center; gap: .6rem; }
+.side .name svg { width: 34px; height: 34px; flex: none; }
+.auth-logo svg { width: 64px; height: 64px; margin-bottom: .5rem; }
 .side nav { display: grid; gap: 2px; }
 .side nav a { color: #dcebe6; text-decoration: none; padding: .55rem .75rem; border-radius: 8px; display: flex; justify-content: space-between; gap: .5rem; }
 .side nav a:hover { background: rgba(255, 255, 255, .1); }
@@ -63,7 +65,16 @@ dialog::backdrop { background: rgba(16, 49, 47, .55); }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .settings-card { background: #fff; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; }
 .settings-card h2 { font-size: 1.3rem; }
-.method-row { display: grid; grid-template-columns: 1fr 1fr 1.4fr auto; gap: .5rem; align-items: end; margin-bottom: .6rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pic-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.pic-card { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: .9rem; align-items: start; padding: .8rem; border: 1px dashed var(--line); border-radius: 8px; }
+.pic-card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 6px; background: #eef3f0; }
+.pic-body { display: grid; gap: .5rem; min-width: 0; }
+.pic-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.pic-actions label.btn:focus-within, .pic-actions label.btn:has(+ input:focus-visible) { outline: 3px solid var(--sun, #f0a23b); outline-offset: 2px; }
+.method-row { display: grid; grid-template-columns: 1fr 1fr 1.2fr auto auto; gap: .5rem; align-items: end; margin-bottom: .9rem; padding-bottom: .9rem; border-bottom: 1px dashed var(--line); }
+.method-on { min-height: 44px; align-self: end; white-space: nowrap; }
+.quick-add { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-bottom: 1rem; }
 .detail dl { display: grid; grid-template-columns: 130px 1fr; gap: .4rem 1rem; margin: 0; }
 .detail dt { color: var(--ink-2); font-weight: 600; }
 .detail dd { margin: 0; white-space: pre-wrap; word-break: break-word; }
@@ -109,6 +120,10 @@ div.stat:hover { border-color: transparent; }
 .recent span { color: var(--ink-2); font-size: .9rem; grid-column: 1; overflow-wrap: anywhere; }
 .recent time { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--ink-2); font-size: .85rem; text-align: right; }
 
+/* Bottom tab bar (phones and small tablets) */
+.tabbar, .sheet, .sheet-back { display: none; }
+.tabbar .badge, .sheet .badge { background: var(--marigold); color: var(--ink); border-radius: 999px; padding: 0 .5rem; font-size: .8rem; font-weight: 700; font-style: normal; min-width: 1.3rem; text-align: center; }
+
 /* Tablet: keep the side menu but narrower */
 @media (max-width: 1100px) {
   .shell { grid-template-columns: 200px minmax(0, 1fr); }
@@ -117,6 +132,25 @@ div.stat:hover { border-color: transparent; }
 
 /* Phone and small tablet: menu becomes a scrollable bar on top, tables become stacked cards */
 @media (max-width: 860px) {
+  .side nav { display: none; }
+  .side .foot a { display: none; }
+  .side .foot .link-btn { display: none; }
+  .main { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+  .tabbar { display: grid; grid-template-columns: repeat(5, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: #fff; border-top: 1px solid var(--line); box-shadow: 0 -6px 24px rgba(16, 49, 47, .12); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
+  .tabbar a, .tabbar button { position: relative; display: grid; justify-items: center; gap: 2px; padding: 6px 2px; min-height: 56px; border: 0; background: none; font: inherit; font-size: .75rem; font-weight: 600; color: var(--ink-2); text-decoration: none; border-radius: 14px; cursor: pointer; }
+  .tabbar svg { width: 24px; height: 24px; }
+  .tabbar a[aria-current="page"], .tabbar button.on { color: var(--teal); background: var(--mist); }
+  .tabbar a[aria-current="page"]::before, .tabbar button.on::before { content: ""; position: absolute; top: -7px; width: 28px; height: 4px; border-radius: 4px; background: var(--marigold); }
+  .tabbar .badge { position: absolute; top: 2px; right: calc(50% - 26px); }
+  .sheet-back { display: block; position: fixed; inset: 0; background: rgba(16, 49, 47, .5); z-index: 40; }
+  .sheet { display: grid; position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #fff; border-radius: 22px 22px 0 0; padding: .5rem 1rem calc(1rem + env(safe-area-inset-bottom)); gap: 2px; box-shadow: 0 -10px 40px rgba(16, 49, 47, .3); max-height: 80dvh; overflow-y: auto; }
+  .sheet[hidden], .sheet-back[hidden] { display: none; }
+  .sheet-grip { width: 44px; height: 5px; border-radius: 5px; background: var(--line); margin: .3rem auto .6rem; }
+  .sheet a, .sheet button { display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 1rem; font: inherit; font-size: 1.05rem; color: var(--ink); text-decoration: none; background: none; border: 0; border-radius: 12px; text-align: left; cursor: pointer; }
+  .sheet a:hover, .sheet button:hover { background: var(--mist); }
+  .sheet a[aria-current="page"] { background: var(--mist-2); font-weight: 600; }
+  #sheet-out { color: var(--danger); font-weight: 600; }
+  #toast { bottom: calc(86px + env(safe-area-inset-bottom)); }
   .shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; }
   .btn-sm { min-height: 44px; }
   .link-btn { min-height: 44px; }
@@ -130,7 +164,8 @@ div.stat:hover { border-color: transparent; }
   .main { padding: 1rem; }
   .main-head h1 { font-size: 1.5rem; }
   .main-head .btn { min-height: 44px; }
-  .two, .method-row { grid-template-columns: 1fr; }
+  .two, .method-row, .pic-grid { grid-template-columns: 1fr; }
+  .pic-card { grid-template-columns: 96px minmax(0, 1fr); }
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
   .stat { padding: .9rem; }
   .stat strong { font-size: 2rem; }

@@ -1,9 +1,9 @@
-import { mountLayout, $, esc, paragraphs, safeUrl, emptyState } from "./ui.js";
+import { mountLayout, $, esc, paragraphs, safeUrl, emptyState, pageUrl } from "./ui.js";
 import { t, pick, fmtDate } from "./i18n.js";
 import { listStories, getStory } from "./data.js";
 import { storyRowHtml } from "./render.js";
 
-mountLayout("stories");
+mountLayout("news");
 
 const slug = new URLSearchParams(location.search).get("s");
 
@@ -14,14 +14,14 @@ async function detail() {
   try {
     const s = await getStory(slug);
     if (!s) {
-      box.innerHTML = `<p>${esc(t("common.notFound"))}</p><p><a href="stories.html">${esc(t("common.back"))}</a></p>`;
+      box.innerHTML = `<p>${esc(t("common.notFound"))}</p><p><a href="${pageUrl("news")}">${esc(t("common.back"))}</a></p>`;
       return;
     }
     const title = pick(s, "title");
     document.title = `${title} | Ahatab Foundation`;
     const img = safeUrl(s.image_url);
     box.innerHTML = `<article class="article">
-      <p class="muted"><a href="stories.html">${esc(t("common.back"))}</a></p>
+      <p class="muted"><a href="${pageUrl("news")}">${esc(t("common.back"))}</a></p>
       <h1>${esc(title)}</h1>
       <p class="muted">${esc(fmtDate(s.published_at))}</p>
       ${img ? `<img class="article-cover" src="${esc(img)}" alt="">` : ""}

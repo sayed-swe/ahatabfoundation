@@ -10,7 +10,9 @@ export const esc = (s) =>
 // Accepts https links and paths on this site (e.g. /images/sample/flood-village.svg). Rejects everything else.
 // Site paths are resolved against the folder this script lives in, so pictures still load when the site is
 // hosted under a sub-path (for example GitHub Pages at /ahatabfoundation/) and not only at the domain root.
-const SITE_BASE = new URL("../", import.meta.url).href;
+export const SITE_BASE = new URL("../", import.meta.url).href;
+// Address of a page of this site, e.g. pageUrl("news", "?s=my-story") -> https://host/base/news/?s=my-story
+export const pageUrl = (name, rest = "") => SITE_BASE + name + "/" + rest;
 export const safeUrl = (u) => {
   const v = String(u || "").trim();
   if (/^https?:\/\//i.test(v)) return v;
@@ -39,6 +41,33 @@ document.addEventListener(
   true
 );
 
+// Pictures on the public pages. Each slot has a built-in illustration; Admin > Settings > Site pictures
+// can replace any of them with an uploaded photo or a link (stored in site_settings key "images").
+export const IMAGE_SLOTS = {
+  hero: "hero-community",
+  intro: "dada-and-child",
+  children: "food-share",
+  about: "care-children",
+  programs: "learning",
+  news: "news-desk",
+  events: "events-gathering",
+  donate: "hands-heart",
+  volunteer: "volunteers-team",
+  contact: "contact",
+};
+export const defaultImage = (slot) => `${SITE_BASE}images/art/${IMAGE_SLOTS[slot]}.svg`;
+
+export async function fillSlots(root = document) {
+  const imgs = $$("img[data-slot]", root);
+  if (!imgs.length) return;
+  imgs.forEach((img) => { if (!img.getAttribute("src")) img.src = defaultImage(img.dataset.slot); });
+  const custom = (await getSettings()).images || {};
+  imgs.forEach((img) => {
+    const u = safeUrl(custom[img.dataset.slot]);
+    if (u && img.src !== u) { delete img.dataset.fb; img.src = u; }
+  });
+}
+
 export function paragraphs(text) {
   return String(text || "")
     .split(/\n{2,}/)
@@ -62,20 +91,17 @@ export const ICON_NAMES = Object.keys(ICONS);
 export const icon = (name) =>
   `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${ICONS[name] || ICONS.heart}</svg>`;
 
-const LOGO = `<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-  <circle cx="24" cy="24" r="21" fill="none" stroke="#1e6b62" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round"/>
-  <path d="M13 29c3-6 7-9 11-9s8 3 11 9" fill="none" stroke="#10312f" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="24" cy="17" r="4.5" fill="#f0a23b"/>
-</svg>`;
+export const LOGO = `<svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle cx="60" cy="60" r="58" fill="#1e6b62"/><circle class="lg-ring" pathLength="1" cx="60" cy="60" r="52.5" fill="none" stroke="#fbe4bc" stroke-width="2.4" stroke-dasharray="7 6" stroke-linecap="round" opacity=".8"/><g class="lg-rays" stroke="#fbe4bc" stroke-width="4.5" stroke-linecap="round"><path d="M30.1 52.0L20.4 49.4"/><path d="M35.2 41.3L27.3 35.3"/><path d="M44.0 33.4L38.9 24.9"/><path d="M55.2 29.4L53.6 19.5"/><path d="M67.0 29.8L69.2 20.1"/><path d="M77.8 34.6L83.5 26.4"/><path d="M86.0 43.1L94.4 37.7"/></g><circle class="lg-sun" cx="60" cy="60" r="21" fill="#f0a23b"/><g class="lg-hands" fill="#fff7e8"><path d="M16 66c1-5 6-6 10-3 4 3 6 8 9 12l-9 4c-5-3-10-8-10-13z"/><path d="M104 66c-1-5-6-6-10-3-4 3-6 8-9 12l9 4c5-3 10-8 10-13z"/><path d="M24 76c7 3 11 6 17 9 7 3 12 4 19 4s12-1 19-4c6-3 10-6 17-9 0 17-16 29-36 29S24 93 24 76z"/></g><g fill="none" stroke="#1e6b62" stroke-width="2.4" stroke-linecap="round" opacity=".55"><path d="M36 80c5 5 14 8 24 8s19-3 24-8" stroke-dasharray="5 5"/></g></svg>`;
 
+// [id, folder, i18n key]. Each page lives at <site>/<folder>/.
 const PAGES = [
-  ["home", "index.html", "nav.home"],
-  ["about", "about.html", "nav.about"],
-  ["programs", "programs.html", "nav.programs"],
-  ["stories", "stories.html", "nav.stories"],
-  ["events", "events.html", "nav.events"],
-  ["involved", "get-involved.html", "nav.involved"],
-  ["contact", "contact.html", "nav.contact"],
+  ["home", "home", "nav.home"],
+  ["about", "about", "nav.about"],
+  ["programs", "programs", "nav.programs"],
+  ["news", "news", "nav.news"],
+  ["events", "events", "nav.events"],
+  ["volunteer", "volunteer", "nav.volunteer"],
+  ["contact", "contact", "nav.contact"],
 ];
 
 export function mountLayout(active) {
@@ -85,26 +111,54 @@ export function mountLayout(active) {
     header.className = "site-header";
     header.innerHTML = `
       <div class="wrap bar">
-        <a class="brand" href="index.html" aria-label="Ahatab Foundation">
+        <a class="brand" href="${pageUrl("home")}" aria-label="Ahatab Foundation">
           ${LOGO}
           <span class="brand-name">${getLang() === "bn" ? "আহতাব ফাউন্ডেশন" : "Ahatab Foundation"}</span>
         </a>
-        <nav class="nav" id="nav" aria-label="Main">
-          ${PAGES.map(([id, href, key]) => `<a href="${href}" data-i18n="${key}"${id === active ? ' aria-current="page"' : ""}></a>`).join("")}
-        </nav>
         <div class="bar-actions">
-          <button class="lang-btn" type="button" data-i18n="lang.other" data-i18n-aria="lang.aria"></button>
-          <a class="btn btn-sun bar-donate" href="get-involved.html#give" data-i18n="nav.donate"></a>
-          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-i18n="nav.menu"></button>
+          <a class="btn btn-sun bar-donate" href="${pageUrl("donate")}" data-i18n="nav.donate"></a>
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-i18n-aria="nav.menu">
+            <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
+          </button>
         </div>
-      </div>`;
-    $(".lang-btn", header).addEventListener("click", () => setLang(getLang() === "en" ? "bn" : "en"));
-    const menu = $(".menu-btn", header);
-    const nav = $("#nav", header);
-    menu.addEventListener("click", () => {
-      const open = nav.classList.toggle("open");
-      menu.setAttribute("aria-expanded", String(open));
+      </div>
+      <div class="menu-back" data-menu-close></div>
+      <aside class="menu" id="menu" aria-hidden="true" aria-label="Menu">
+        <div class="menu-head">
+          <div class="lang-seg" role="group" data-i18n-aria="lang.aria">
+            <button type="button" data-lang="bn" aria-pressed="${getLang() === "bn"}">বাংলা</button>
+            <button type="button" data-lang="en" aria-pressed="${getLang() === "en"}">English</button>
+          </div>
+          <button class="menu-x" type="button" data-menu-close data-i18n-aria="nav.close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <nav class="menu-nav" id="nav" aria-label="Main">
+          ${PAGES.map(([id, folder, key]) => `<a href="${pageUrl(folder)}" data-i18n="${key}"${id === active ? ' aria-current="page"' : ""}></a>`).join("")}
+        </nav>
+        <a class="btn btn-sun menu-donate" href="${pageUrl("donate")}" data-i18n="nav.donate"></a>
+      </aside>`;
+    const menu = $("#menu", header);
+    const btn = $(".menu-btn", header);
+    const setOpen = (open) => {
+      header.classList.toggle("menu-open", open);
+      document.documentElement.classList.toggle("no-scroll", open);
+      btn.setAttribute("aria-expanded", String(open));
+      menu.setAttribute("aria-hidden", String(!open));
+      if (open) $("a", menu)?.focus();
+      else if (header.contains(document.activeElement)) btn.focus();
+    };
+    btn.addEventListener("click", () => setOpen(btn.getAttribute("aria-expanded") !== "true"));
+    $$("[data-menu-close]", header).forEach((el) => el.addEventListener("click", () => setOpen(false)));
+    header.addEventListener("keydown", (e) => {
+      if (btn.getAttribute("aria-expanded") !== "true") return;
+      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Tab") { // keep keyboard focus inside the open menu
+        const items = $$("a, button", menu).filter((x) => x.offsetParent !== null);
+        const first = items[0], last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     });
+    $$("[data-lang]", header).forEach((b) => b.addEventListener("click", () => { if (b.dataset.lang !== getLang()) setLang(b.dataset.lang); }));
   }
   if (footer) {
     footer.className = "site-footer";
@@ -117,7 +171,7 @@ export function mountLayout(active) {
           </div>
           <div>
             <h2 data-i18n="footer.explore"></h2>
-            <ul>${PAGES.map(([, href, key]) => `<li><a href="${href}" data-i18n="${key}"></a></li>`).join("")}</ul>
+            <ul>${PAGES.map(([, folder, key]) => `<li><a href="${pageUrl(folder)}" data-i18n="${key}"></a></li>`).join("")}<li><a href="${pageUrl("donate")}" data-i18n="nav.donate"></a></li></ul>
           </div>
           <div>
             <h2 data-i18n="footer.contact"></h2>
@@ -126,13 +180,43 @@ export function mountLayout(active) {
         </div>
         <div class="foot-base">
           <span data-i18n="footer.rights"></span>
-          <a href="admin/" data-i18n="footer.admin"></a>
+          <a href="${SITE_BASE}admin/" data-i18n="footer.admin"></a>
         </div>
       </div>`;
   }
   applyI18n();
   fillFooter();
+  fillSlots();
+  playIntro();
   import("./track.js").then((m) => m.track()).catch(() => {});
+}
+
+
+// Opening animation: shown once per visit (browser session), skipped for people who prefer reduced motion.
+// A tiny inline script in each page <head> marks <html class="intro-pending"> so the page never flashes before it.
+function playIntro() {
+  const root = document.documentElement;
+  const done = () => root.classList.remove("intro-pending");
+  let seen = false;
+  try { seen = !!sessionStorage.getItem("ahatab-intro"); sessionStorage.setItem("ahatab-intro", "1"); } catch (_) { /* ignore */ }
+  if (seen || matchMedia("(prefers-reduced-motion: reduce)").matches) return done();
+  const bn = getLang() === "bn";
+  const el = document.createElement("div");
+  el.id = "intro";
+  el.setAttribute("aria-hidden", "true");
+  el.innerHTML = `<div class="intro-inner">${LOGO}<div class="intro-name">${bn ? "আহতাব ফাউন্ডেশন" : "Ahatab Foundation"}</div><div class="intro-tag">${esc(t("hero.title").replace(/\.$/, ""))}</div></div>`;
+  document.body.append(el);
+  done(); // the overlay itself now covers the page
+  let closed = false;
+  const close = () => {
+    if (closed) return;
+    closed = true;
+    el.classList.add("leaving");
+    setTimeout(() => el.remove(), 600);
+  };
+  el.addEventListener("click", close);
+  addEventListener("keydown", close, { once: true });
+  setTimeout(close, 2600);
 }
 
 async function fillFooter() {

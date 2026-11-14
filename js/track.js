@@ -35,7 +35,7 @@ function referrerHost() {
 
 function pagePath() {
   let p = location.pathname.startsWith(SITE_BASE_PATH) ? location.pathname.slice(SITE_BASE_PATH.length) : location.pathname.replace(/^\//, "");
-  if (!p || p.endsWith("/")) p += "index.html";
+  p = p.replace(/index\.html$/, "").replace(/\/$/, "") || "home";
   const slug = new URLSearchParams(location.search).get("s");
   return ("/" + p + (slug ? "?s=" + slug : "")).slice(0, 200);
 }

@@ -181,3 +181,13 @@ create policy "page_views admin read" on public.page_views for select to authent
 create policy "page_views admin delete" on public.page_views for delete to authenticated using ((select public.is_admin()));
 -- public.analytics_summary(days int) returns the dashboard numbers as jsonb. It is SECURITY DEFINER,
 -- checks is_admin(), and is executable by authenticated users only. See the migration for the full body.
+
+-- ===== Donation rules (migration "donations_trx_rules") =====
+-- Transaction IDs are letters and digits only, amounts stay in a sane range, and the same
+-- Transaction ID cannot be submitted twice for the same payment method.
+alter table public.donations add constraint donations_trx_format check (trx_id is null or trx_id ~ '^[A-Za-z0-9]{6,24}$');
+alter table public.donations add constraint donations_amount_range check (amount >= 10 and amount <= 1000000);
+alter table public.donations add constraint donations_text_len check (char_length(donor_name) <= 120 and (message is null or char_length(message) <= 1000));
+create unique index donations_method_trx_uidx on public.donations (lower(method), upper(trx_id)) where trx_id is not null;
+
+-- site_settings keys used by the site: general, impact, donate (payment methods), images (Site pictures).

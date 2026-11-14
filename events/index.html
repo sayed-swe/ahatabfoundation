@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>try{if(!sessionStorage.getItem("ahatab-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-pending")}catch(e){}</script>
   <title>Events | Ahatab Foundation</title>
   <meta name="description" content="Relief drives, health camps and workshops from Ahatab Foundation in Faridpur, Bangladesh.">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla&family=Young+Serif&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="../css/site.css">
 </head>
 <body data-title="meta.events">
   <a class="skip" href="#main" data-i18n="skip"></a>
   <header id="site-header"></header>
   <main id="main">
-    <div class="wrap page-head">
-      <h1 data-i18n="events.h1"></h1>
-      <p class="lede" data-i18n="events.lede"></p>
-      <div class="stitch stitch-short"></div>
+    <div class="wrap page-head has-art">
+      <div class="page-head-text">
+        <h1 data-i18n="events.h1"></h1>
+        <p class="lede" data-i18n="events.lede"></p>
+        <div class="stitch stitch-short"></div>
+      </div>
+      <figure class="page-art"><img data-slot="events" alt="" width="1200" height="800" decoding="async"></figure>
     </div>
     <section class="section" style="padding-top:0">
       <div class="wrap">
@@ -36,13 +40,13 @@
       <div class="wrap">
         <h2 data-i18n="cta.title"></h2>
         <div class="btn-row">
-          <a class="btn btn-sun" href="get-involved.html#give" data-i18n="cta.donate"></a>
-          <a class="btn btn-ghost" href="get-involved.html#volunteer" data-i18n="cta.volunteer"></a>
+          <a class="btn btn-sun" href="../donate/" data-i18n="cta.donate"></a>
+          <a class="btn btn-ghost" href="../volunteer/" data-i18n="cta.volunteer"></a>
         </div>
       </div>
     </section>
   </main>
   <footer id="site-footer"></footer>
-  <script type="module" src="js/events.js"></script>
+  <script type="module" src="../js/events.js"></script>
 </body>
 </html>

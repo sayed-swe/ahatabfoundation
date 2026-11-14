@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>try{if(!sessionStorage.getItem("ahatab-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-pending")}catch(e){}</script>
   <title>News and stories | Ahatab Foundation</title>
   <meta name="description" content="News, updates and stories from Ahatab Foundation.">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Tiro+Bangla&family=Young+Serif&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="../css/site.css">
 </head>
 <body data-title="meta.stories">
   <a class="skip" href="#main" data-i18n="skip"></a>
   <header id="site-header"></header>
   <main id="main">
-    <div class="wrap page-head" id="page-head">
-      <h1 data-i18n="stories.page.title"></h1>
-      <p class="lede" data-i18n="stories.page.lede"></p>
-      <div class="stitch stitch-short"></div>
+    <div class="wrap page-head has-art" id="page-head">
+      <div class="page-head-text">
+        <h1 data-i18n="stories.page.title"></h1>
+        <p class="lede" data-i18n="stories.page.lede"></p>
+        <div class="stitch stitch-short"></div>
+      </div>
+      <figure class="page-art"><img data-slot="news" alt="" width="1200" height="800" decoding="async"></figure>
     </div>
     <div class="wrap" id="list-view">
       <section class="section" style="padding-top:0">
@@ -28,6 +32,6 @@
     <div class="wrap section" id="detail-view" hidden></div>
   </main>
   <footer id="site-footer"></footer>
-  <script type="module" src="js/stories.js"></script>
+  <script type="module" src="../js/news.js"></script>
 </body>
 </html>
