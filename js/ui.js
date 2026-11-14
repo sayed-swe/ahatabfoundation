@@ -18,6 +18,27 @@ export const safeUrl = (u) => {
   return "";
 };
 
+// If a picture cannot be loaded (bad link, deleted upload, blocked host), show a built-in illustration
+// instead of a broken-image icon. Opt out with data-no-fallback.
+const FALLBACK_IMG =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect width="1200" height="800" fill="#dceae4"/>' +
+      '<rect x="40" y="40" width="1120" height="720" rx="28" fill="none" stroke="#1e6b62" stroke-width="6" stroke-dasharray="22 16" stroke-linecap="round"/>' +
+      '<path d="M600 540C470 450 410 385 410 322c0-52 40-90 90-90 40 0 76 24 100 62 24-38 60-62 100-62 50 0 90 38 90 90 0 63-60 128-190 218z" fill="#f0a23b"/></svg>'
+  );
+document.addEventListener(
+  "error",
+  (e) => {
+    const img = e.target;
+    if (!(img instanceof HTMLImageElement) || img.dataset.fb || img.hasAttribute("data-no-fallback")) return;
+    img.dataset.fb = "1";
+    img.removeAttribute("srcset");
+    img.src = FALLBACK_IMG;
+  },
+  true
+);
+
 export function paragraphs(text) {
   return String(text || "")
     .split(/\n{2,}/)
@@ -111,6 +132,7 @@ export function mountLayout(active) {
   }
   applyI18n();
   fillFooter();
+  import("./track.js").then((m) => m.track()).catch(() => {});
 }
 
 async function fillFooter() {

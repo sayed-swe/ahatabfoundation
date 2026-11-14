@@ -54,3 +54,11 @@ Colors, type and spacing are CSS variables at the top of `css/site.css`. The des
 The site ships with clearly labelled sample stories (flood and river erosion, rising prices of essentials, safe water after floods), sample events and original illustrations in `images/sample/`. Sample items show a "Sample" label to visitors. In **Admin → Overview**, use **Remove sample content** to delete them in one click. Your own stories and events are never touched.
 
 Image fields accept an https link, a site path such as `/images/sample/volunteers.svg`, or an upload to the `media` bucket.
+
+## Visitor analytics
+
+Every public page records a view in `page_views` (page, device type, language, referring site, a random browser id). No IP address and no cookies. Visitors with "Do Not Track" on, crawlers and the admin area are not counted. In **Admin → Visitors** you can see views today, unique visitors, a daily chart (7, 30 or 90 days), top pages, devices, language, where visitors come from and the latest visits. Tick "Don't count my own visits" there to keep your own browser out of the numbers.
+
+Gifts, volunteers and messages have search and **Download CSV** (opens in Excel; cells that could run as formulas are neutralised).
+
+If a picture cannot load, the site shows a built-in illustration instead of a broken-image icon. Image paths starting with `/` are resolved against the site folder, so the site also works under a sub-path such as GitHub Pages project sites.

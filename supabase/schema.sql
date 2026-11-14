@@ -159,3 +159,25 @@ create policy "media admin delete" on storage.objects for delete to authenticate
 -- Sample content (6 stories incl. flood / rising prices / safe water, 5 events, program pictures)
 -- was added by the later migration "sample_content_and_images". Every sample row has is_sample = true,
 -- so the admin overview's "Remove sample content" button deletes only those rows.
+
+
+-- ===== Visitor analytics (migration "analytics_page_views") =====
+-- No IP address and no cookies. A random id kept in the visitor's browser counts unique visitors.
+create table public.page_views (
+  id bigint generated always as identity primary key,
+  created_at timestamptz not null default now(),
+  path text not null check (char_length(path) between 1 and 200),
+  referrer text check (referrer is null or char_length(referrer) <= 200),
+  visitor_id text not null check (char_length(visitor_id) between 8 and 64),
+  session_id text not null check (char_length(session_id) between 8 and 64),
+  device text not null check (device in ('mobile','tablet','desktop')),
+  lang text not null default 'en' check (lang in ('en','bn')),
+  screen_w int check (screen_w is null or screen_w between 0 and 10000)
+);
+create index page_views_created_idx on public.page_views (created_at desc);
+alter table public.page_views enable row level security;
+create policy "page_views visitors insert" on public.page_views for insert to anon, authenticated with check (true);
+create policy "page_views admin read" on public.page_views for select to authenticated using ((select public.is_admin()));
+create policy "page_views admin delete" on public.page_views for delete to authenticated using ((select public.is_admin()));
+-- public.analytics_summary(days int) returns the dashboard numbers as jsonb. It is SECURITY DEFINER,
+-- checks is_admin(), and is executable by authenticated users only. See the migration for the full body.

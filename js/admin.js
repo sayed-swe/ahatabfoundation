@@ -174,7 +174,7 @@ async function signOut() {
 
 /* ---------- shell and routing ---------- */
 const NAV = [
-  ["overview", "Overview"], ["programs", "Programs"], ["stories", "Stories"], ["events", "Events"],
+  ["overview", "Overview"], ["analytics", "Visitors"], ["programs", "Programs"], ["stories", "Stories"], ["events", "Events"],
   ["donations", "Gifts"], ["volunteers", "Volunteers"], ["messages", "Messages"], ["settings", "Settings"],
 ];
 
@@ -204,6 +204,7 @@ async function route() {
   main.innerHTML = '<p class="muted">Loading…</p>';
   try {
     if (view === "overview") await renderOverview(main);
+    else if (view === "analytics") await renderAnalytics(main);
     else if (RES[view]) await renderList(main, view);
     else if (INBOX[view]) await renderInbox(main, view);
     else if (view === "settings") await renderSettings(main);
@@ -247,6 +248,8 @@ async function renderOverview(main) {
     count("stories", (q) => q.eq("is_sample", true)),
     count("events", (q) => q.eq("is_sample", true)),
   ]);
+  let vis = null;
+  try { vis = (await sb.rpc("analytics_summary", { days: 7 })).data; } catch { /* the overview works without it */ }
   const card = (href, n, label, alert) => `<a class="stat ${alert && n ? "alert" : ""}" href="#/${href}"><strong>${n}</strong>${label}</a>`;
   main.innerHTML = `<div class="main-head"><h1>Overview</h1></div>
     <div class="stats">
@@ -255,6 +258,8 @@ async function renderOverview(main) {
       ${card("messages", m, "unread messages", true)}
       ${card("programs", p, "programs on the website")}
       ${card("stories", s, "published stories")}
+      ${vis ? card("analytics", num(vis.today.visitors), "visitors today") : ""}
+      ${vis ? card("analytics", num(vis.totals.views), "page views, last 7 days") : ""}
     </div>
     ${sampleStories + sampleEvents ? `<div class="note"><b>Sample content:</b> ${sampleStories} stories and ${sampleEvents} events are examples so you can see how the site looks. Visitors see a "Sample" label on them. Replace them with your own, or remove them all now. <button class="btn btn-sm btn-danger" id="rm-samples" type="button" style="margin-left:.5rem">Remove sample content</button></div>` : ""}
     <div class="note"><b>Tip:</b> change the contact details, payment methods and impact numbers under <a href="#/settings">Settings</a>. The impact numbers stay hidden on the website until you switch them on.</div>`;
@@ -278,11 +283,13 @@ async function renderList(main, key) {
   if (error) throw error;
   const rows = data || [];
   main.innerHTML = `<div class="main-head"><h1>${r.label}</h1><button class="btn btn-teal" id="add">Add ${r.one}</button></div>
+    ${rows.length > 4 ? searchBox() : ""}
     <div class="table-wrap">${rows.length ? `<table><thead><tr>${r.columns.map((c) => `<th>${c[1]}</th>`).join("")}<th></th></tr></thead><tbody>
-      ${rows.map((row) => `<tr data-id="${esc(row.id)}">${r.columns.map(([f, , fmt]) => `<td>${fmt ? fmt(row[f]) : esc(row[f] ?? "")}</td>`).join("")}
+      ${rows.map((row) => `<tr data-id="${esc(row.id)}">${r.columns.map(([f, l, fmt]) => `<td data-label="${esc(l)}">${fmt ? fmt(row[f]) : esc(row[f] ?? "")}</td>`).join("")}
         <td class="actions"><button class="btn btn-ghost btn-sm" data-edit>Edit</button><button class="btn btn-sm btn-danger" data-del>Delete</button></td></tr>`).join("")}
       </tbody></table>` : `<p class="empty">Nothing here yet. Add your first ${r.one}.</p>`}</div>`;
   document.getElementById("add").onclick = () => openForm(key, null);
+  bindSearch(main);
   main.querySelectorAll("tr[data-id]").forEach((tr) => {
     const row = rows.find((x) => x.id === tr.dataset.id);
     tr.querySelector("[data-edit]").onclick = () => openForm(key, row);
@@ -393,12 +400,16 @@ async function renderInbox(main, key) {
   const { data, error } = await sb.from(r.table).select("*").order("created_at", { ascending: false });
   if (error) throw error;
   const rows = data || [];
-  main.innerHTML = `<div class="main-head"><h1>${r.label}</h1></div>
+  main.innerHTML = `<div class="main-head"><h1>${r.label}</h1>${rows.length ? '<button class="btn btn-ghost" id="csv" type="button">Download CSV</button>' : ""}</div>
+    ${rows.length > 4 ? searchBox() : ""}
     <div class="table-wrap">${rows.length ? `<table><thead><tr>${r.columns.map((c) => `<th>${c[1]}</th>`).join("")}<th>Status</th><th></th></tr></thead><tbody>
-    ${rows.map((row) => `<tr data-id="${esc(row.id)}">${r.columns.map(([f, , fmt]) => `<td>${fmt ? esc(fmt(row[f])) : esc(row[f] ?? "")}</td>`).join("")}
-      <td><select aria-label="Status" data-status>${r.statuses.map((s) => `<option ${s === row.status ? "selected" : ""}>${s}</option>`).join("")}</select></td>
+    ${rows.map((row) => `<tr data-id="${esc(row.id)}">${r.columns.map(([f, l, fmt]) => `<td data-label="${esc(l)}">${fmt ? esc(fmt(row[f])) : esc(row[f] ?? "")}</td>`).join("")}
+      <td data-label="Status"><select aria-label="Status" data-status>${r.statuses.map((s) => `<option ${s === row.status ? "selected" : ""}>${s}</option>`).join("")}</select></td>
       <td class="actions"><button class="btn btn-ghost btn-sm" data-view>View</button><button class="btn btn-sm btn-danger" data-del>Delete</button></td></tr>`).join("")}
     </tbody></table>` : `<p class="empty">Nothing here yet.</p>`}</div>`;
+  bindSearch(main);
+  const csv = document.getElementById("csv");
+  if (csv) csv.onclick = () => downloadCsv(`ahatab-${key}-${new Date().toISOString().slice(0, 10)}.csv`, r.detail, rows);
   main.querySelectorAll("tr[data-id]").forEach((tr) => {
     const row = rows.find((x) => x.id === tr.dataset.id);
     tr.querySelector("[data-status]").onchange = async (e) => {
@@ -427,6 +438,101 @@ async function renderInbox(main, key) {
       route();
     };
   });
+}
+
+
+/* ---------- search and CSV ---------- */
+const searchBox = () => `<div class="searchbar"><label class="sr" for="q">Search</label><input id="q" type="search" placeholder="Search this list" autocomplete="off"></div>`;
+function bindSearch(main) {
+  const q = main.querySelector("#q");
+  if (!q) return;
+  q.addEventListener("input", () => {
+    const term = q.value.trim().toLowerCase();
+    let shown = 0;
+    main.querySelectorAll("tbody tr").forEach((tr) => {
+      const hit = !term || tr.textContent.toLowerCase().includes(term);
+      tr.hidden = !hit;
+      if (hit) shown++;
+    });
+    let none = main.querySelector(".no-match");
+    if (!shown && !none) { none = document.createElement("p"); none.className = "empty no-match"; none.textContent = "No matches."; main.querySelector(".table-wrap").append(none); }
+    if (shown && none) none.remove();
+  });
+}
+// Values that start with = + - @ are prefixed so a spreadsheet never runs them as a formula.
+const csvCell = (v) => {
+  let t = String(v ?? "");
+  if (/^[=+\-@\t\r]/.test(t)) t = "'" + t;
+  return /[",\n\r]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t;
+};
+function downloadCsv(name, fields, rows) {
+  const head = fields.map((f) => csvCell(f[1])).join(",");
+  const body = rows.map((r) => fields.map(([k, , fmt]) => csvCell(fmt ? fmt(r[k]) : r[k])).join(",")).join("\n");
+  const blob = new Blob(["\ufeff" + head + "\n" + body], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+/* ---------- visitors ---------- */
+const PAGE_NAMES = { "index.html": "Home", "about.html": "About us", "programs.html": "What we do", "stories.html": "News", "events.html": "Events", "get-involved.html": "Get involved", "contact.html": "Contact" };
+const DEVICE_NAMES = { mobile: "Phone", tablet: "Tablet", desktop: "Computer" };
+const LANG_NAMES = { en: "English", bn: "বাংলা" };
+function pageName(path) {
+  const [file, query] = String(path).replace(/^\//, "").split("?");
+  const base = PAGE_NAMES[file] || file;
+  return query ? `${base} (story)` : base;
+}
+const num = (n) => Number(n || 0).toLocaleString("en-IN");
+
+function barList(items, nameOf = (k) => k) {
+  const total = items.reduce((a, b) => a + b.n, 0) || 1;
+  if (!items.length) return '<p class="muted">No data yet.</p>';
+  return `<ul class="bars">${items.map((i) => `<li><span class="bars-name">${esc(nameOf(i.k))}</span><span class="bars-track"><span style="width:${Math.max(3, Math.round((i.n / total) * 100))}%"></span></span><span class="bars-n">${num(i.n)} <small>${Math.round((i.n / total) * 100)}%</small></span></li>`).join("")}</ul>`;
+}
+
+function dailyChart(daily) {
+  const max = Math.max(1, ...daily.map((d) => d.views));
+  const fmt = (d) => new Date(d + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  const label = `Page views per day, ${fmt(daily[0].d)} to ${fmt(daily[daily.length - 1].d)}. Highest day: ${max}.`;
+  return `<div class="chart" role="img" aria-label="${esc(label)}">
+    <div class="chart-y"><span>${num(max)}</span><span>${num(Math.round(max / 2))}</span><span>0</span></div>
+    <div class="chart-bars">${daily.map((d) => `<span class="chart-col" title="${esc(fmt(d.d))}: ${d.views} views, ${d.visitors} visitors"><i style="height:${(d.views / max) * 100}%"></i></span>`).join("")}</div>
+    <div class="chart-x"><span>${esc(fmt(daily[0].d))}</span><span>${esc(fmt(daily[daily.length - 1].d))}</span></div>
+  </div>`;
+}
+
+async function renderAnalytics(main, days = Number(sessionStorage.getItem("ahatab-range")) || 30) {
+  const { data, error } = await sb.rpc("analytics_summary", { days });
+  if (error) throw error;
+  const a = data;
+  const skip = !!localStorage.getItem("ahatab-no-track");
+  main.innerHTML = `<div class="main-head"><h1>Visitors</h1>
+      <div class="seg" role="group" aria-label="Time range">${[7, 30, 90].map((n) => `<button type="button" class="seg-btn" data-range="${n}" aria-pressed="${n === a.days}">${n} days</button>`).join("")}</div></div>
+    <div class="stats">
+      <div class="stat"><strong>${num(a.today.views)}</strong>page views today<small>${num(a.today.visitors)} visitors</small></div>
+      <div class="stat"><strong>${num(a.totals.views)}</strong>page views, last ${a.days} days</div>
+      <div class="stat"><strong>${num(a.totals.visitors)}</strong>unique visitors, last ${a.days} days</div>
+      <div class="stat"><strong>${num(a.totals.sessions)}</strong>visits (sessions)<small>${a.totals.sessions ? (a.totals.views / a.totals.sessions).toFixed(1) : "0"} pages per visit</small></div>
+    </div>
+    <section class="panel-card"><h2>Page views per day</h2>${a.totals.views ? dailyChart(a.daily) : '<p class="muted">No visits recorded yet. They appear here as people open the website.</p>'}</section>
+    <div class="grid-2">
+      <section class="panel-card"><h2>Most viewed pages</h2>${a.pages.length ? `<div class="table-wrap flat"><table><thead><tr><th>Page</th><th>Views</th><th>Visitors</th></tr></thead><tbody>${a.pages.map((p) => `<tr><td data-label="Page">${esc(pageName(p.path))}</td><td data-label="Views">${num(p.views)}</td><td data-label="Visitors">${num(p.visitors)}</td></tr>`).join("")}</tbody></table></div>` : '<p class="muted">No data yet.</p>'}</section>
+      <section class="panel-card"><h2>Devices</h2>${barList(a.devices, (k) => DEVICE_NAMES[k] || k)}<h2 class="mt">Language</h2>${barList(a.langs, (k) => LANG_NAMES[k] || k)}</section>
+      <section class="panel-card"><h2>Where visitors come from</h2>${barList(a.referrers)}</section>
+      <section class="panel-card"><h2>Latest visits</h2>${a.recent.length ? `<ul class="recent">${a.recent.map((r) => `<li><b>${esc(pageName(r.path))}</b><span>${esc(DEVICE_NAMES[r.device] || r.device)} · ${esc(LANG_NAMES[r.lang] || r.lang)} · ${esc(r.referrer)}</span><time>${esc(fmtWhen(r.created_at))}</time></li>`).join("")}</ul>` : '<p class="muted">No data yet.</p>'}</section>
+    </div>
+    <div class="note"><b>Privacy:</b> the website stores no IP addresses and sets no cookies. A random code kept in each visitor's own browser is used to count unique visitors, and visitors who turn on "Do Not Track" are not counted. Counts since you started: ${num(a.all_time)} page views.
+      <label class="check" style="margin-top:.6rem"><input type="checkbox" id="no-track" ${skip ? "checked" : ""}><span>Don't count my own visits on this browser</span></label></div>`;
+  main.querySelectorAll("[data-range]").forEach((b) => (b.onclick = () => { sessionStorage.setItem("ahatab-range", b.dataset.range); renderAnalytics(main, Number(b.dataset.range)).catch((e) => toast(e.message, true)); }));
+  document.getElementById("no-track").onchange = (e) => {
+    try { e.target.checked ? localStorage.setItem("ahatab-no-track", "1") : localStorage.removeItem("ahatab-no-track"); } catch {}
+    toast(e.target.checked ? "Your visits on this browser are no longer counted" : "Your visits on this browser are counted again");
+  };
 }
 
 /* ---------- settings ---------- */
