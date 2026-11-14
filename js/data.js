@@ -32,8 +32,10 @@ export const listPrograms = (limit) => {
   return run(q);
 };
 
-export const listStories = (limit) => {
+export const listStories = (limit, { category, exclude } = {}) => {
   let q = sb.from("stories").select("*").eq("published", true).lte("published_at", new Date().toISOString()).order("published_at", { ascending: false });
+  if (category) q = q.eq("category", category);
+  if (exclude) q = q.neq("category", exclude);
   if (limit) q = q.limit(limit);
   return run(q);
 };
@@ -45,11 +47,18 @@ export async function getStory(slug) {
   return rows[0] || null;
 }
 
+// Events are "upcoming" from the start of today, so an event is still listed on its own day.
+const startOfToday = () => {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString();
+};
+
 export const listEvents = (limit) => {
-  // Show events from the start of today, so an event is still listed on its own day.
-  const start = new Date();
-  start.setHours(0, 0, 0, 0);
-  let q = sb.from("events").select("*").eq("published", true).gte("starts_at", start.toISOString()).order("starts_at");
+  let q = sb.from("events").select("*").eq("published", true).gte("starts_at", startOfToday()).order("starts_at");
   if (limit) q = q.limit(limit);
   return run(q);
 };
+
+export const listPastEvents = (limit = 12) =>
+  run(sb.from("events").select("*").eq("published", true).lt("starts_at", startOfToday()).order("starts_at", { ascending: false }).limit(limit));

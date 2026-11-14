@@ -24,6 +24,7 @@ const toLocalInput = (iso) => {
   d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
   return d.toISOString().slice(0, 16);
 };
+const samplePill = (v) => (v ? '<span class="pill">Sample</span>' : "");
 const pill = (on, yes = "Published", no = "Draft") => `<span class="pill ${on ? "on" : "off"}">${on ? yes : no}</span>`;
 const money = (n) => "৳" + Number(n).toLocaleString("en-IN");
 
@@ -51,7 +52,7 @@ const RES = {
   stories: {
     label: "Stories", table: "stories", one: "story",
     order: [["published_at", false]],
-    columns: [["title_en", "Title"], ["category", "Type"], ["published_at", "Date", fmtWhen], ["published", "Status", (v) => pill(v)]],
+    columns: [["title_en", "Title"], ["category", "Type"], ["published_at", "Date", fmtWhen], ["published", "Status", (v) => pill(v)], ["is_sample", "", samplePill]],
     fields: [
       { name: "title_en", label: "Title (English)", type: "text", required: true },
       { name: "title_bn", label: "Title (বাংলা)", type: "text" },
@@ -59,7 +60,7 @@ const RES = {
       { name: "excerpt_bn", label: "Short summary (বাংলা)", type: "textarea", rows: 2 },
       { name: "body_en", label: "Full text (English)", type: "textarea", rows: 8, hint: "Leave a blank line between paragraphs." },
       { name: "body_bn", label: "Full text (বাংলা)", type: "textarea", rows: 8 },
-      { name: "category", label: "Type", type: "select", options: ["news", "update", "story"], default: "news" },
+      { name: "category", label: "Type", type: "select", options: ["news", "update", "story", "issue"], default: "news", hint: "Choose \"issue\" for a problem story. Up to three of them show on the home page under Why this work matters." },
       { name: "image_url", label: "Cover photo", type: "image" },
       { name: "published_at", label: "Publish date", type: "datetime", default: "now", hint: "A future date keeps the story hidden until then." },
       { name: "slug", label: "Web address name", type: "slug", from: "title_en", hint: "Letters, numbers and dashes. Filled in from the title." },
@@ -69,7 +70,7 @@ const RES = {
   events: {
     label: "Events", table: "events", one: "event",
     order: [["starts_at", false]],
-    columns: [["title_en", "Title"], ["starts_at", "When", fmtWhen], ["published", "Status", (v) => pill(v)]],
+    columns: [["title_en", "Title"], ["starts_at", "When", fmtWhen], ["published", "Status", (v) => pill(v)], ["is_sample", "", samplePill]],
     fields: [
       { name: "title_en", label: "Title (English)", type: "text", required: true },
       { name: "title_bn", label: "Title (বাংলা)", type: "text" },
@@ -237,12 +238,14 @@ async function refreshBadges() {
 
 /* ---------- overview ---------- */
 async function renderOverview(main) {
-  const [d, v, m, p, s] = await Promise.all([
+  const [d, v, m, p, s, sampleStories, sampleEvents] = await Promise.all([
     count("donations", (q) => q.eq("status", "pending")),
     count("volunteers", (q) => q.eq("status", "new")),
     count("messages", (q) => q.eq("status", "new")),
     count("programs", (q) => q.eq("published", true)),
     count("stories", (q) => q.eq("published", true)),
+    count("stories", (q) => q.eq("is_sample", true)),
+    count("events", (q) => q.eq("is_sample", true)),
   ]);
   const card = (href, n, label, alert) => `<a class="stat ${alert && n ? "alert" : ""}" href="#/${href}"><strong>${n}</strong>${label}</a>`;
   main.innerHTML = `<div class="main-head"><h1>Overview</h1></div>
@@ -253,7 +256,17 @@ async function renderOverview(main) {
       ${card("programs", p, "programs on the website")}
       ${card("stories", s, "published stories")}
     </div>
+    ${sampleStories + sampleEvents ? `<div class="note"><b>Sample content:</b> ${sampleStories} stories and ${sampleEvents} events are examples so you can see how the site looks. Visitors see a "Sample" label on them. Replace them with your own, or remove them all now. <button class="btn btn-sm btn-danger" id="rm-samples" type="button" style="margin-left:.5rem">Remove sample content</button></div>` : ""}
     <div class="note"><b>Tip:</b> change the contact details, payment methods and impact numbers under <a href="#/settings">Settings</a>. The impact numbers stay hidden on the website until you switch them on.</div>`;
+  const rm = document.getElementById("rm-samples");
+  if (rm) rm.onclick = async () => {
+    if (!confirm(`Delete ${sampleStories} sample stories and ${sampleEvents} sample events? Your own content is not touched.`)) return;
+    const a = await sb.from("stories").delete().eq("is_sample", true);
+    const b = await sb.from("events").delete().eq("is_sample", true);
+    if (a.error || b.error) return toast((a.error || b.error).message, true);
+    toast("Sample content removed");
+    route();
+  };
 }
 
 /* ---------- generic content lists ---------- */
@@ -296,7 +309,7 @@ function fieldHtml(f, row) {
   else if (f.type === "number") input = `<input id="${id}" name="${f.name}" type="number" value="${esc(v ?? 0)}">`;
   else if (f.type === "datetime") input = `<input id="${id}" name="${f.name}" type="datetime-local" value="${esc(toLocalInput(v === "now" || (!row && !v) ? new Date().toISOString() : v))}"${req}>`;
   else if (f.type === "image")
-    input = `<div class="img-field"><input id="${id}" name="${f.name}" type="url" placeholder="https://" value="${esc(v ?? "")}">
+    input = `<div class="img-field"><input id="${id}" name="${f.name}" type="text" placeholder="https://… or upload below" value="${esc(v ?? "")}">
       <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" data-upload="${f.name}" aria-label="Upload a photo">
       <img alt="" ${safeUrl(v) ? `src="${esc(v)}"` : "hidden"} data-preview="${f.name}"></div>`;
   else input = `<input id="${id}" name="${f.name}" type="text" value="${esc(v ?? "")}"${req}${f.type === "slug" ? ' pattern="[a-z0-9\\-]+"' : ""}>`;
@@ -356,7 +369,7 @@ function openForm(key, row) {
         payload[f.name] = val === "" && !f.required && f.type !== "select" ? null : val;
       }
     }
-    if (payload.image_url && !safeUrl(payload.image_url)) return (document.getElementById("form-err").textContent = "The photo link must start with https://");
+    if (payload.image_url && !safeUrl(payload.image_url)) return (document.getElementById("form-err").textContent = "The photo link must start with https:// or be a path on this site, like /images/sample/flood-village.svg");
     if ("slug" in payload && !payload.slug) payload.slug = slugify(payload[r.fields.find((f) => f.type === "slug").from]) || `${r.one}-${Date.now()}`;
     const btn = form.querySelector("button[type=submit]");
     btn.disabled = true;

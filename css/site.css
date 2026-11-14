@@ -124,6 +124,22 @@ a.patch:hover::after { opacity: .65; }
 .patch-more { font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .patch-icon svg, .icon svg { width: 34px; height: 34px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .patch-icon { margin-bottom: 1.25rem; }
+.patch-img { width: 100%; height: 150px; object-fit: cover; border-radius: 3px; margin-bottom: 1.1rem; }
+.patch.has-img h3 { margin-top: 0; }
+.patch.has-img { min-height: 0; }
+
+/* ---------- problems we work on ---------- */
+.issues { display: grid; gap: clamp(2rem, 5vw, 3.5rem); }
+.issue { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: center; }
+.issue:nth-child(even) .issue-img { order: 2; }
+.issue-img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 6px; }
+.issue h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); }
+.issue h3 a { color: var(--ink); text-decoration: none; }
+.issue h3 a:hover { text-decoration: underline; text-decoration-color: var(--marigold); text-decoration-thickness: 3px; }
+.issue p { max-width: 52ch; color: var(--ink-2); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pill-sample { display: inline-block; margin-left: .5rem; padding: 0 .6rem; border-radius: 999px; background: var(--marigold-soft); color: var(--ink); font-size: .85rem; font-weight: 600; vertical-align: middle; }
+.row-meta .pill-sample { display: table; margin: .35rem 0 0; }
 
 /* ---------- impact ---------- */
 .impact { display: grid; grid-template-columns: repeat(4, 1fr); }
@@ -215,17 +231,21 @@ html[lang="bn"] .page-head h1 { font-size: clamp(1.8rem, 3.8vw, 2.7rem); }
 .foot-base { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid rgba(255, 255, 255, .18); display: flex; justify-content: space-between; flex-wrap: wrap; gap: .75rem; font-size: .95rem; }
 
 /* ---------- responsive ---------- */
+@media (max-width: 1080px) {
+  .menu-btn { display: inline-block; }
+  .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; flex-direction: column; align-items: stretch; padding: .75rem 1.25rem 1.25rem; border-bottom: 1px solid var(--line); z-index: 20; }
+  .nav.open { display: flex; }
+  .nav a[aria-current="page"]::after { right: auto; width: 40px; }
+}
 @media (max-width: 900px) {
+  .bar-donate { display: none; }
+  .issue { grid-template-columns: 1fr; }
+  .issue:nth-child(even) .issue-img { order: 0; }
   .hero-grid, .split, .two-col, .foot-grid { grid-template-columns: 1fr; }
   .quilt { justify-self: start; max-width: 420px; }
   .impact { grid-template-columns: 1fr 1fr; gap: 1.5rem 0; }
   .impact > div:nth-child(3) { border-left: 0; padding-left: 0; }
   .values { grid-template-columns: 1fr; }
-  .menu-btn { display: inline-block; }
-  .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; flex-direction: column; align-items: stretch; padding: .75rem 1.25rem 1.25rem; border-bottom: 1px solid var(--line); z-index: 20; }
-  .nav.open { display: flex; }
-  .nav a[aria-current="page"]::after { right: auto; width: 40px; }
-  .bar-donate { display: none; }
 }
 @media (max-width: 720px) {
   .quilt-grid { grid-template-columns: 1fr; }

@@ -7,7 +7,8 @@ export const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 export const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-export const safeUrl = (u) => (/^https?:\/\//i.test(u || "") ? u : "");
+// Accepts https links and paths on this site (e.g. /images/sample/flood-village.svg). Rejects everything else.
+export const safeUrl = (u) => (/^(https?:\/\/|\/(?!\/))/i.test(u || "") ? u : "");
 
 export function paragraphs(text) {
   return String(text || "")
@@ -43,6 +44,7 @@ const PAGES = [
   ["about", "about.html", "nav.about"],
   ["programs", "programs.html", "nav.programs"],
   ["stories", "stories.html", "nav.stories"],
+  ["events", "events.html", "nav.events"],
   ["involved", "get-involved.html", "nav.involved"],
   ["contact", "contact.html", "nav.contact"],
 ];

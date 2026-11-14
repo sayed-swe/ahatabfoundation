@@ -1,7 +1,7 @@
 import { mountLayout, $, esc, emptyState } from "./ui.js";
 import { t, fmtNumber } from "./i18n.js";
 import { getSettings, listPrograms, listStories, listEvents } from "./data.js";
-import { patchHtml, storyRowHtml, eventRowHtml } from "./render.js";
+import { patchHtml, issueHtml, storyRowHtml, eventRowHtml } from "./render.js";
 
 mountLayout("home");
 
@@ -32,10 +32,21 @@ async function impact() {
   $("#impact").hidden = false;
 }
 
+async function issues() {
+  try {
+    const rows = await listStories(3, { category: "issue" });
+    if (!rows.length) return; // hide the section when no problem stories are published
+    $("#issues-list").innerHTML = rows.map(issueHtml).join("");
+    $("#issues").hidden = false;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function stories() {
   const el = $("#stories");
   try {
-    const rows = await listStories(3);
+    const rows = await listStories(3, { exclude: "issue" });
     if (rows.length) el.innerHTML = rows.map(storyRowHtml).join("");
     else el.innerHTML = `<li class="muted">${esc(t("common.empty.stories"))}</li>`;
   } catch (err) {
@@ -56,6 +67,7 @@ async function events() {
 }
 
 programs();
+issues();
 impact();
 stories();
 events();

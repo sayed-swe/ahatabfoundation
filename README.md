@@ -11,7 +11,8 @@ Static site (plain HTML, CSS and ES modules, no build step) with [Supabase](http
 | Home | `index.html` |
 | About us | `about.html` |
 | What we do | `programs.html` |
-| News, stories and events | `stories.html` |
+| News and stories | `stories.html` |
+| Events (upcoming and past) | `events.html` |
 | Donate and volunteer | `get-involved.html` |
 | Contact | `contact.html` |
 | Admin dashboard | `admin/index.html` |
@@ -47,3 +48,9 @@ Import the repository in Vercel (or Netlify, Cloudflare Pages) as a static site:
 ## Editing the look
 
 Colors, type and spacing are CSS variables at the top of `css/site.css`. The design idea is nakshi kantha: patches of cloth held together by a running stitch.
+
+## Sample content
+
+The site ships with clearly labelled sample stories (flood and river erosion, rising prices of essentials, safe water after floods), sample events and original illustrations in `images/sample/`. Sample items show a "Sample" label to visitors. In **Admin → Overview**, use **Remove sample content** to delete them in one click. Your own stories and events are never touched.
+
+Image fields accept an https link, a site path such as `/images/sample/volunteers.svg`, or an upload to the `media` bucket.

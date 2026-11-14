@@ -1,7 +1,7 @@
 import { mountLayout, $, esc, paragraphs, safeUrl, emptyState } from "./ui.js";
 import { t, pick, fmtDate } from "./i18n.js";
-import { listStories, listEvents, getStory } from "./data.js";
-import { storyRowHtml, eventRowHtml } from "./render.js";
+import { listStories, getStory } from "./data.js";
+import { storyRowHtml } from "./render.js";
 
 mountLayout("stories");
 
@@ -41,12 +41,6 @@ async function list() {
   } catch (err) {
     console.error(err);
     el.innerHTML = `<li class="muted">${esc(t("common.loadError"))}</li>`;
-  }
-  try {
-    const ev = await listEvents();
-    $("#events-list").innerHTML = ev.length ? ev.map(eventRowHtml).join("") : `<li class="muted">${esc(t("common.empty.events"))}</li>`;
-  } catch (err) {
-    console.error(err);
   }
 }
 

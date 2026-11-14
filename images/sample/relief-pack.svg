@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Illustration: a jute relief bag with a heart and supplies">
+<rect width="1200" height="800" fill="#14504a"/>
+
+<rect x="450" y="150" width="130" height="170" rx="10" fill="#fff" transform="rotate(-8 515 235)"/>
+<rect x="600" y="140" width="120" height="180" rx="10" fill="#f0a23b" transform="rotate(6 660 230)"/>
+<rect x="745" y="170" width="62" height="150" rx="14" fill="#fbe4bc"/>
+<rect x="760" y="140" width="32" height="40" fill="#fbe4bc"/>
+<rect x="756" y="122" width="40" height="24" rx="6" fill="#10312f"/>
+<path d="M360 330 Q330 330 320 380 L290 690 Q285 745 335 750 H865 Q915 745 910 690 L880 380 Q870 330 840 330Z" fill="#d9b36c"/>
+<path d="M420 330 L400 255 Q600 220 800 255 L780 330Z" fill="#c9a259"/>
+<path d="M395 267 Q600 305 805 267" stroke="#10312f" stroke-width="12" fill="none" stroke-linecap="round"/>
+<path d="M600 650 C520 600 470 550 470 500 C470 460 505 435 540 435 C570 435 590 452 600 472 C610 452 630 435 660 435 C695 435 730 460 730 500 C730 550 680 600 600 650Z" fill="#f0a23b"/>
+<path d="M345 705 H855" stroke="#10312f" stroke-opacity=".4" stroke-width="5" stroke-dasharray="14 10"/>
+
+<rect x="18" y="18" width="1164" height="764" rx="6" fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="4" stroke-dasharray="14 12"/>
+</svg>

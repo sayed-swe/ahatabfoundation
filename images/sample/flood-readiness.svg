@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Illustration: a raised house on stilts beside a flood gauge">
+<rect width="1200" height="800" fill="#fbe4bc"/>
+
+<g stroke="#1e6b62" stroke-width="6" stroke-linecap="round" opacity=".6"><path d="M120 120 l-14 40"/><path d="M200 90 l-14 40"/><path d="M280 140 l-14 40"/><path d="M360 100 l-14 40"/></g>
+<g fill="#8a5412"><rect x="290" y="410" width="22" height="230"/><rect x="400" y="410" width="22" height="230"/><rect x="510" y="410" width="22" height="230"/><rect x="600" y="410" width="22" height="230"/></g>
+<rect x="260" y="400" width="400" height="26" fill="#c67f1f"/>
+<rect x="280" y="290" width="360" height="112" fill="#f5d9d3"/>
+<path d="M250 292 L460 205 L670 292Z" fill="#3e5754"/>
+<rect x="430" y="330" width="46" height="72" fill="#2f3e7e"/><rect x="320" y="318" width="50" height="44" fill="#fbe4bc"/><rect x="540" y="318" width="50" height="44" fill="#fbe4bc"/>
+<rect x="860" y="170" width="64" height="470" fill="#fff" stroke="#10312f" stroke-width="5"/>
+<rect x="865" y="175" width="54" height="130" fill="#b2342d"/>
+<rect x="865" y="305" width="54" height="130" fill="#f0a23b"/>
+<rect x="865" y="435" width="54" height="200" fill="#6bb08f"/>
+<g stroke="#10312f" stroke-width="4"><path d="M860 215 h26"/><path d="M860 255 h26"/><path d="M860 295 h26"/><path d="M860 335 h26"/><path d="M860 375 h26"/><path d="M860 415 h26"/><path d="M860 455 h26"/><path d="M860 495 h26"/><path d="M860 535 h26"/><path d="M860 575 h26"/></g>
+<path d="M820 540 L848 524 V556Z" fill="#10312f"/>
+<path d="M0 560 Q100 540 200 560 T400 560 T600 560 T800 560 T1000 560 T1200 560 V800 H0Z" fill="#1e6b62" fill-opacity=".92"/>
+<path d="M60 640 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M390 640 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M720 640 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M500 700 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M830 700 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M150 740 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M480 740 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/>
+
+<rect x="18" y="18" width="1164" height="764" rx="6" fill="none" stroke="#10312f" stroke-opacity=".3" stroke-width="4" stroke-dasharray="14 12"/>
+</svg>

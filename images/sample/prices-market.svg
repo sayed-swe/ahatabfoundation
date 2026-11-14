@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Illustration: a basket of rice, lentils and oil beside a rising price tag">
+<rect width="1200" height="800" fill="#fbe4bc"/>
+
+<rect x="0" y="600" width="1200" height="200" fill="#14504a"/>
+<path d="M40 640 H1160" stroke="#fff" stroke-opacity=".5" stroke-width="4" stroke-dasharray="14 12"/>
+<path d="M330 430 H870 L820 690 Q810 720 780 720 H420 Q390 720 380 690Z" fill="#c67f1f"/>
+<g stroke="#8a5412" stroke-width="7" stroke-dasharray="26 12" stroke-linecap="round">
+<path d="M340 470 H860"/><path d="M350 520 H850"/><path d="M360 570 H840"/><path d="M368 620 H832"/><path d="M376 670 H824"/>
+</g>
+<path d="M400 440 C380 330 420 250 480 240 C540 250 580 330 560 440Z" fill="#fff"/>
+<path d="M455 252 q25 -28 50 0" fill="none" stroke="#10312f" stroke-width="8" stroke-linecap="round"/>
+<rect x="418" y="335" width="124" height="28" fill="#f0a23b" opacity=".85"/>
+<rect x="620" y="300" width="130" height="140" rx="18" fill="#fff" fill-opacity=".85" stroke="#10312f" stroke-width="4"/>
+<rect x="635" y="278" width="100" height="26" rx="8" fill="#2f3e7e"/>
+<g fill="#d9822b"><circle cx="650" cy="410" r="12"/><circle cx="680" cy="418" r="12"/><circle cx="710" cy="410" r="12"/><circle cx="665" cy="388" r="12"/><circle cx="696" cy="390" r="12"/><circle cx="725" cy="396" r="10"/></g>
+<rect x="780" y="270" width="64" height="170" rx="14" fill="#f0a23b"/>
+<rect x="797" y="228" width="30" height="48" fill="#f0a23b"/>
+<rect x="793" y="208" width="38" height="26" rx="6" fill="#10312f"/>
+<rect x="790" y="330" width="44" height="60" rx="4" fill="#fff" opacity=".85"/>
+<circle cx="980" cy="210" r="92" fill="#b2342d"/>
+<path d="M980 270 V160 M940 205 L980 160 L1020 205" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="18" y="18" width="1164" height="764" rx="6" fill="none" stroke="#10312f" stroke-opacity=".3" stroke-width="4" stroke-dasharray="14 12"/>
+</svg>

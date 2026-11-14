@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Illustration: a health camp tent with a medical plus sign">
+<rect width="1200" height="800" fill="#f5d9d3"/>
+
+<rect x="0" y="620" width="1200" height="180" fill="#dceae4"/>
+<rect x="320" y="430" width="560" height="190" fill="#fbe4bc"/>
+<path d="M600 200 L300 430 H900Z" fill="#fff"/>
+<g fill="#1e6b62"><path d="M600 200 L300 430 H400Z"/><path d="M600 200 L500 430 H600Z"/><path d="M600 200 L700 430 H800Z"/></g>
+<path d="M300 430 H900" stroke="#10312f" stroke-opacity=".3" stroke-width="6"/>
+<path d="M520 620 V525 Q600 470 680 525 V620Z" fill="#14504a"/>
+<path d="M600 200 V135" stroke="#10312f" stroke-width="8" stroke-linecap="round"/>
+<path d="M600 135 L680 160 L600 185Z" fill="#f0a23b"/>
+<circle cx="600" cy="345" r="52" fill="#fff" stroke="#1e6b62" stroke-width="5"/>
+<rect x="588" y="318" width="24" height="54" rx="4" fill="#1e6b62"/><rect x="573" y="333" width="54" height="24" rx="4" fill="#1e6b62"/>
+<rect x="960" y="560" width="120" height="60" rx="10" fill="#2f3e7e"/><rect x="990" y="530" width="60" height="40" rx="10" fill="none" stroke="#2f3e7e" stroke-width="8"/>
+<rect x="150" y="520" width="90" height="100" rx="8" fill="#f0a23b"/><rect x="170" y="545" width="50" height="14" fill="#fff"/><rect x="190" y="527" width="10" height="60" fill="#fff" opacity="0"/>
+
+<rect x="18" y="18" width="1164" height="764" rx="6" fill="none" stroke="#10312f" stroke-opacity=".3" stroke-width="4" stroke-dasharray="14 12"/>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Illustration: houses and a boat in floodwater">
+<rect width="1200" height="800" fill="#dceae4"/>
+
+<circle cx="960" cy="190" r="76" fill="#f0a23b"/>
+<path d="M0 470 Q150 430 300 462 T600 458 T900 466 T1200 450 V560 H0Z" fill="#9cc3b5"/>
+<path d="M1010 500 C1020 420 1030 340 1022 250" stroke="#14504a" stroke-width="14" fill="none" stroke-linecap="round"/>
+<g fill="#14504a">
+<path d="M1022 250 C960 220 920 240 900 280 C950 262 990 262 1022 250Z"/>
+<path d="M1022 250 C1080 215 1125 235 1140 275 C1090 262 1055 262 1022 250Z"/>
+<path d="M1022 250 C1000 195 1030 160 1070 150 C1052 190 1040 220 1022 250Z"/>
+<path d="M1022 250 C985 190 950 190 920 200 C955 215 985 230 1022 250Z"/>
+</g>
+<rect x="190" y="360" width="230" height="160" fill="#f5d9d3"/>
+<path d="M165 362 L305 282 L445 362Z" fill="#3e5754"/>
+<rect x="285" y="415" width="42" height="105" fill="#2f3e7e"/>
+<rect x="215" y="395" width="44" height="40" fill="#fbe4bc"/>
+<rect x="700" y="400" width="170" height="120" fill="#fbe4bc"/>
+<path d="M680 402 L785 345 L890 402Z" fill="#2f3e7e"/>
+<rect x="765" y="440" width="32" height="80" fill="#14504a"/>
+<path d="M0 490 Q100 470 200 490 T400 490 T600 490 T800 490 T1000 490 T1200 490 V800 H0Z" fill="#1e6b62"/>
+<path d="M40 560 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M370 560 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M700 560 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M600 620 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M930 620 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M100 720 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M430 720 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/><path d="M760 720 q30 -20 60 0 t60 0 t60 0 t60 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/>
+<path d="M410 640 C520 690 700 690 810 640 C790 710 700 745 610 745 C520 745 430 710 410 640Z" fill="#c67f1f"/>
+<path d="M500 645 Q610 550 720 645Z" fill="#2f3e7e"/>
+<path d="M800 560 L575 725" stroke="#3e5754" stroke-width="10" stroke-linecap="round"/>
+<circle cx="610" cy="632" r="20" fill="#fbe4bc"/>
+
+<rect x="18" y="18" width="1164" height="764" rx="6" fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="4" stroke-dasharray="14 12"/>
+</svg>

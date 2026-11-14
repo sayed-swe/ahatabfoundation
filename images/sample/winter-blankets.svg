@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Illustration: a stack of folded kantha blankets under a winter moon">
+<rect width="1200" height="800" fill="#2f3e7e"/>
+
+<circle cx="980" cy="170" r="70" fill="#fbe4bc"/><circle cx="1012" cy="150" r="62" fill="#2f3e7e"/>
+<g fill="#fbe4bc"><circle cx="200" cy="140" r="5"/><circle cx="340" cy="220" r="4"/><circle cx="520" cy="130" r="5"/><circle cx="700" cy="210" r="4"/><circle cx="820" cy="120" r="4"/><circle cx="120" cy="300" r="4"/></g>
+<ellipse cx="600" cy="690" rx="420" ry="30" fill="#10312f" opacity=".35"/>
+<rect x="240" y="560" width="720" height="100" rx="14" fill="#f5d9d3"/>
+<rect x="270" y="470" width="660" height="100" rx="14" fill="#1e6b62"/>
+<rect x="250" y="380" width="700" height="100" rx="14" fill="#fbe4bc"/>
+<rect x="290" y="290" width="620" height="100" rx="14" fill="#dceae4"/>
+<g fill="none" stroke="#10312f" stroke-opacity=".45" stroke-width="4" stroke-dasharray="12 10" stroke-linecap="round">
+<path d="M262 636 H938"/><path d="M290 545 H910"/><path d="M270 456 H930"/><path d="M310 366 H890"/>
+</g>
+<path d="M330 520 l20 -20 l20 20 l20 -20 l20 20 l20 -20 l20 20 l20 -20 l20 20" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M600 310 l20 20 l-20 20 l-20 -20Z" fill="none" stroke="#10312f" stroke-opacity=".4" stroke-width="5"/>
+
+<rect x="18" y="18" width="1164" height="764" rx="6" fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="4" stroke-dasharray="14 12"/>
+</svg>

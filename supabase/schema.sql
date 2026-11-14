@@ -49,7 +49,7 @@ create table public.programs (
   title_en text not null check (char_length(title_en) between 1 and 160),
   title_bn text, summary_en text, summary_bn text, body_en text, body_bn text,
   icon text not null default 'heart',
-  image_url text,
+  image_url text check (image_url is null or image_url ~* '^(https?://|/[^/])'),
   sort int not null default 0,
   published boolean not null default true,
   created_at timestamptz not null default now()
@@ -67,7 +67,8 @@ create table public.stories (
   title_en text not null check (char_length(title_en) between 1 and 200),
   title_bn text, excerpt_en text, excerpt_bn text, body_en text, body_bn text,
   category text not null default 'update',
-  image_url text,
+  image_url text check (image_url is null or image_url ~* '^(https?://|/[^/])'),
+  is_sample boolean not null default false,
   published boolean not null default false,
   published_at timestamptz not null default now(),
   created_at timestamptz not null default now()
@@ -84,7 +85,8 @@ create table public.events (
   title_en text not null check (char_length(title_en) between 1 and 200),
   title_bn text, description_en text, description_bn text, location text,
   starts_at timestamptz not null,
-  image_url text,
+  image_url text check (image_url is null or image_url ~* '^(https?://|/[^/])'),
+  is_sample boolean not null default false,
   published boolean not null default true,
   created_at timestamptz not null default now()
 );
@@ -153,4 +155,7 @@ create policy "media admin update" on storage.objects for update to authenticate
 create policy "media admin delete" on storage.objects for delete to authenticated
   using (bucket_id = 'media' and (select public.is_admin()));
 
--- Starter content (site_settings, five programs, one story) was seeded by the same migration.
+-- Starter content (site_settings, five programs, one story) was seeded by the migration.
+-- Sample content (6 stories incl. flood / rising prices / safe water, 5 events, program pictures)
+-- was added by the later migration "sample_content_and_images". Every sample row has is_sample = true,
+-- so the admin overview's "Remove sample content" button deletes only those rows.

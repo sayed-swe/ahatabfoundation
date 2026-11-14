@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Illustration: a hand pump tube well filling a clay pot">
+<rect width="1200" height="800" fill="#dceae4"/>
+
+<circle cx="1010" cy="170" r="70" fill="#f0a23b"/>
+<path d="M0 600 H1200 V800 H0Z" fill="#9cc3b5"/>
+<g fill="#b8d6c9"><rect x="800" y="470" width="150" height="130"/><path d="M780 472 L875 410 L970 472Z" fill="#8fb5a6"/><rect x="1000" y="500" width="120" height="100"/><path d="M985 502 L1060 450 L1135 502Z" fill="#8fb5a6"/></g>
+<rect x="360" y="590" width="330" height="40" rx="8" fill="#8aa39b"/>
+<rect x="490" y="250" width="44" height="345" fill="#2f3e7e"/>
+<rect x="455" y="215" width="120" height="75" rx="14" fill="#2f3e7e"/>
+<path d="M575 255 H655 V305 H625 V282 H575Z" fill="#2f3e7e"/>
+<path d="M475 232 L350 135" stroke="#10312f" stroke-width="20" stroke-linecap="round"/>
+<circle cx="344" cy="130" r="20" fill="#f0a23b"/>
+<path d="M640 312 V490" stroke="#3a9bb5" stroke-width="16" stroke-linecap="round" stroke-dasharray="28 16"/>
+<path d="M565 505 C545 575 575 630 635 630 C695 630 725 575 705 505Z" fill="#f5d9d3" stroke="#10312f" stroke-width="5"/>
+<ellipse cx="635" cy="505" rx="72" ry="15" fill="#3a9bb5" stroke="#10312f" stroke-width="5"/>
+<path d="M600 560 q35 25 70 0" fill="none" stroke="#f0a23b" stroke-width="6" stroke-dasharray="10 8" stroke-linecap="round"/>
+<g fill="#3a9bb5"><path d="M180 330 C210 380 225 405 225 430 a45 45 0 0 1 -90 0 C135 405 150 380 180 330Z"/><path d="M250 520 C268 550 276 565 276 580 a26 26 0 0 1 -52 0 C224 565 232 550 250 520Z"/></g>
+
+<rect x="18" y="18" width="1164" height="764" rx="6" fill="none" stroke="#10312f" stroke-opacity=".3" stroke-width="4" stroke-dasharray="14 12"/>
+</svg>
