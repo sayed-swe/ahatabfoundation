@@ -115,7 +115,14 @@ export function mountLayout(active) {
           ${LOGO}
           <span class="brand-name">${getLang() === "bn" ? "আহতাব ফাউন্ডেশন" : "Ahatab Foundation"}</span>
         </a>
+        <nav class="bar-nav" aria-label="Main">
+          ${PAGES.map(([id, folder, key]) => `<a href="${pageUrl(folder)}" data-i18n="${key}"${id === active ? ' aria-current="page"' : ""}></a>`).join("")}
+        </nav>
         <div class="bar-actions">
+          <div class="lang-seg bar-lang" role="group" data-i18n-aria="lang.aria">
+            <button type="button" data-lang="bn" aria-pressed="${getLang() === "bn"}">বাংলা</button>
+            <button type="button" data-lang="en" aria-pressed="${getLang() === "en"}">English</button>
+          </div>
           <a class="btn btn-sun bar-donate" href="${pageUrl("donate")}" data-i18n="nav.donate"></a>
           <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-i18n-aria="nav.menu">
             <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -131,7 +138,7 @@ export function mountLayout(active) {
           </div>
           <button class="menu-x" type="button" data-menu-close data-i18n-aria="nav.close"><span aria-hidden="true">&times;</span></button>
         </div>
-        <nav class="menu-nav" id="nav" aria-label="Main">
+        <nav class="menu-nav" id="nav" aria-label="Menu pages">
           ${PAGES.map(([id, folder, key]) => `<a href="${pageUrl(folder)}" data-i18n="${key}"${id === active ? ' aria-current="page"' : ""}></a>`).join("")}
         </nav>
         <a class="btn btn-sun menu-donate" href="${pageUrl("donate")}" data-i18n="nav.donate"></a>
@@ -212,11 +219,11 @@ function playIntro() {
     if (closed) return;
     closed = true;
     el.classList.add("leaving");
-    setTimeout(() => el.remove(), 600);
+    setTimeout(() => el.remove(), 350);
   };
   el.addEventListener("click", close);
   addEventListener("keydown", close, { once: true });
-  setTimeout(close, 2600);
+  setTimeout(close, 1250);
 }
 
 async function fillFooter() {

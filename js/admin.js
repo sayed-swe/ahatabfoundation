@@ -1,5 +1,7 @@
-import { sb } from "./supa.js";
+import { loadClient } from "./supa.js";
 import { esc, safeUrl, ICON_NAMES, LOGO, defaultImage } from "./ui.js";
+
+const sb = await loadClient();
 
 const app = document.getElementById("app");
 const dlg = document.getElementById("dlg");
