@@ -20,7 +20,7 @@ Every page is a folder with an `index.html`, so the address bar shows clean name
 | `/contact/` | Contact |
 | `/admin/` | Admin dashboard |
 
-**Navigation.** On desktop (1240px and wider) the topics, the BN/English switch and Donate sit in the top bar. On tablets and phones they move into a compact menu drawer (3-line button). On the phone the admin has an app-style bottom bar (Home, Visitors, Gifts, Inbox, More).
+**Navigation.** On desktop (1120px and wider) the topics, the BN/English switch and Donate sit in the top bar. On tablets and phones they move into a compact menu drawer (3-line button). On the phone the admin has an app-style bottom bar (Home, Visitors, Gifts, Inbox, More).
 
 **Language.** Visitors whose device time zone is Bangladesh (Asia/Dhaka) get Bangla first; everyone else gets English. A visitor's own choice is remembered. A short (about one second) logo animation plays once per visit and is skipped when the device asks for reduced motion.
 
