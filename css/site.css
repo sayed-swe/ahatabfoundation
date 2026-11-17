@@ -378,22 +378,36 @@ html[dir="rtl"] .back::before { content: "\203A  "; }
 .bar-nav a:focus-visible { outline: 3px solid var(--marigold); outline-offset: 2px; }
 
 @media (min-width: 1120px) {
-  .bar { gap: 1rem; min-height: 68px; }
+  .bar { gap: 1rem; min-height: 72px; }
+  .brand { margin-right: 1.25rem; }
   .brand-name { white-space: nowrap; }
-  .brand { margin-right: 0; }
-  .bar-nav { display: flex; gap: .1rem; margin-left: auto; align-items: center; }
+  .bar-nav { display: flex; gap: .2rem; margin-left: auto; align-items: center; }
   .bar-lang { display: inline-flex; }
-  .bar-actions { gap: .9rem; }
+  .bar-actions { gap: .9rem; margin-left: 1rem; }
   .menu-btn, .menu, .menu-back { display: none; }
 }
 @media (min-width: 1120px) and (max-width: 1279px) {
-  .bar-nav a { padding: .5rem .55rem; font-size: .94rem; }
+  .bar-nav a { padding: .5rem .6rem; font-size: .94rem; }
   .bar-lang button { padding: .25rem .65rem; font-size: .88rem; }
-  .bar-actions { gap: .6rem; }
+  .bar-actions { gap: .6rem; margin-left: .5rem; }
   .bar-donate { padding: .5rem 1rem; }
   .brand-name { font-size: 1.15rem; }
 }
-@media (min-width: 1280px) { .bar { gap: 1.25rem; } }
+@media (min-width: 1280px) {
+  .bar { gap: 1.5rem; }
+  .brand { margin-right: 2rem; }
+  .bar-nav { gap: .35rem; }
+  .bar-nav a { padding: .55rem .8rem; }
+  .bar-actions { margin-left: 1.25rem; }
+}
+@media (min-width: 1440px) {
+  .site-header .bar.wrap { width: min(1280px, 100% - 3rem); }
+  .bar { gap: 2rem; min-height: 76px; }
+  .brand { margin-right: 3rem; }
+  .bar-nav { gap: .5rem; }
+  .bar-nav a { padding: .6rem 1rem; font-size: 1.02rem; }
+  .bar-actions { gap: 1.1rem; margin-left: 1.5rem; }
+}
 @media (max-width: 1119px) {
   .bar { min-height: 64px; }
 }
